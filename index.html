@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ucapan Spesial</title>
+    <title>Ucapan Spesial Buat Kamu!</title>
     <style>
         * {
             margin: 0;
@@ -11,10 +11,10 @@
             box-sizing: border-box;
         }
         body {
+            font-family: Arial, sans-serif;
             background-image: url('background.jpg');
             background-size: cover;
             background-position: center;
-            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -27,6 +27,7 @@
             text-align: center;
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            animation: fadeIn 1s ease-out;
         }
         img {
             width: 150px;
@@ -43,36 +44,72 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin: 5px;
         }
-        .gift {
+        .gift, .final-message {
             display: none;
             margin-top: 15px;
         }
-        .gift p {
+        .gift p, .final-message p {
             margin: 5px 0;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
         }
     </style>
 </head>
 <body>
     <audio id="bgMusic" src="musik.mp3" loop></audio>
     <div class="container">
-        <img src="foto.jpg" alt="Foto">
-        <h2>Hai MAS!</h2>
-        <p>Selamat Ulang Tahun, semoga semua yang terbaik buat kamu!</p>
-        <button onclick="bukaKado()">Buka Kado</button>
+        <img src="foto.jpg" alt="Foto Spesial">
+        <h2>Hai MAS Kesayangan!</h2>
+        <p>Hari ini istimewa banget, karena ini hari ulang tahunmu!</p>
+        <p>Ada pesan spesial dan kejutan kecil buat kamu nih.</p>
+        <button onclick="mulaiUcapan()">Lihat Pesan</button>
+
         <div class="gift">
-            <p>Kado spesial untukmu: <span id="hadiahText"></span></p>
+            <p><strong>Pesan buat kamu:</strong></p>
+            <p id="pesanText"></p>
+            <button onclick="bukaKado()">Buka Kado Spesial</button>
+        </div>
+
+        <div class="final-message">
+            <p><strong>Kado untuk kamu adalah...</strong></p>
+            <p id="hadiahText"></p>
+            <p>Semoga kamu suka ya! Jangan lupa selalu senyum hari ini!</p>
+            <p>Love you!</p>
         </div>
     </div>
 
     <script>
-        const hadiah = ["Burung", "Ikan", "Harimau", "Gajah"];
-        document.getElementById('bgMusic').play();
+        const pesanUcapan = [
+            "Selamat ulang tahun ya! Semoga sehat selalu dan bahagia tiap hari.",
+            "Doa terbaik buat kamu, sukses terus ya!",
+            "Pokoknya aku selalu dukung kamu apapun yang terjadi!",
+            "Semoga semua impianmu jadi nyata!"
+        ];
+
+        const hadiahSpesial = [
+            "Liburan bareng ke tempat impian kita!",
+            "Kue ulang tahun spesial buatan aku!",
+            "Satu hari penuh bebas pilih mau ngapain bareng aku!",
+            "Surprise tambahan yang rahasia banget!"
+        ];
+
+        const music = document.getElementById('bgMusic');
+
+        function mulaiUcapan() {
+            music.play();
+            const randomPesan = pesanUcapan[Math.floor(Math.random() * pesanUcapan.length)];
+            document.getElementById('pesanText').innerText = randomPesan;
+            document.querySelector('.gift').style.display = 'block';
+        }
 
         function bukaKado() {
-            const randomHadiah = hadiah[Math.floor(Math.random() * hadiah.length)];
+            const randomHadiah = hadiahSpesial[Math.floor(Math.random() * hadiahSpesial.length)];
             document.getElementById('hadiahText').innerText = randomHadiah;
-            document.querySelector('.gift').style.display = 'block';
+            document.querySelector('.final-message').style.display = 'block';
         }
     </script>
 </body>
