@@ -3,129 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ucapan Spesial Untukmu!</title>
+    <title>Happy Birthday!</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
+            background: url('https://i.imgur.com/5JzE7UK.jpg') no-repeat center center/cover;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: url('background.jpg') no-repeat center center/cover;
-            font-family: Arial, sans-serif;
             margin: 0;
+            overflow: hidden;
         }
         .container {
-            background: rgba(255,255,255,0.9);
+            background: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 0 20px rgba(0,0,0,0.3);
         }
+        img {
+            width: 150px;
+            cursor: pointer;
+        }
         button {
             padding: 10px 15px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
             background: #ff5f5f;
             color: white;
-        }
-        img {
-            width: 120px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            margin-top: 10px;
         }
-        #balon, #kado, #surat {
-            display: inline-block;
-            margin: 5px;
+        textarea {
+            width: 80%;
+            height: 80px;
+            margin: 10px 0;
         }
         .hidden {
             display: none;
+        }
+        #ucapan img {
+            width: 200px;
+            border-radius: 10px;
+        }
+        #balon {
+            width: 100px;
+        }
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: red;
+            border-radius: 50%;
+            animation: fall 2s linear;
+        }
+        @keyframes fall {
+            from {transform: translateY(-100px);}
+            to {transform: translateY(100vh);}
         }
     </style>
 </head>
 <body>
 
-<audio id="bgMusic" src="musik.mp3" loop></audio>
+<audio id="music" src="https://dekatutorial.github.io/Gellen%20Martadinata%20-%20Selamat%20Ulang%20Tahun.mp3" loop></audio>
 
 <div class="container">
-    <h2>Hai, MAS Kesayangan!</h2>
-    <p>Ada banyak kejutan buat kamu. Pecahkan balon dulu ya!</p>
-    
-    <div>
-        <img src="balon.png" alt="Balon" id="balon" onclick="pecahkanBalon()">
+    <h2>Selamat Ulang Tahun!</h2>
+    <p>Tiup lilinnya dulu ya!</p>
+    <img src="https://i.imgur.com/NjrzwrR.gif" id="kueLilin" onclick="tiupLilin()">
+
+    <div id="ucapan" class="hidden">
+        <img src="https://i.imgur.com/1ThdFVZ.jpg" alt="Foto">
+        <h3>Selamat Ulang Tahun, MAS Tersayang!</h3>
+        <p>Semoga hari ini penuh kebahagiaan.</p>
+        <p>Tekan balon ini buat kejutan!</p>
+        <img src="https://i.imgur.com/KwNzdVY.png" id="balon" onclick="pecahkanBalon()">
     </div>
 
-    <div id="pesanRahasia" class="hidden">
-        <p>Yeay! Ini pesan rahasia buat kamu:</p>
-        <p id="isiPesan"></p>
-        <button onclick="tampilkanKado()">Buka Kado</button>
+    <div id="hadiah" class="hidden">
+        <p>Ini dia kadonya!</p>
+        <img src="https://i.imgur.com/GFKAtEc.png" onclick="bukaKado()">
     </div>
 
-    <div id="kadoContainer" class="hidden">
-        <img src="kado.png" alt="Kado" id="kado" onclick="bukaKado()">
-        <p id="isiKado" class="hidden"></p>
-    </div>
-
-    <div id="suratContainer" class="hidden">
-        <img src="surat.png" alt="Surat" id="surat" onclick="bukaSurat()">
-        <p id="isiSurat" class="hidden"></p>
+    <div id="doa" class="hidden">
+        <p>Doa dan harapan untukmu:</p>
+        <p>"Semoga sehat selalu, bahagia, sukses, dan semua impianmu terwujud."</p>
+        <p>Aku juga mau dengar pesan dari kamu!</p>
+        <textarea id="pesan" placeholder="Tulis pesan balasan..."></textarea><br>
+        <button onclick="kirimPesan()">Kirim ke WhatsApp</button>
     </div>
 </div>
 
 <script>
-    const bgMusic = document.getElementById('bgMusic');
-    const pesanRahasia = [
-        "Selamat ulang tahun, semoga sehat dan bahagia selalu!",
-        "Aku selalu dukung kamu, semangat terus ya!",
-        "Semoga semua impianmu jadi nyata tahun ini!",
-        "Terima kasih sudah selalu ada, kamu hebat!"
-    ];
-    const hadiahSpesial = [
-        "Liburan bareng kita berdua!",
-        "Kue ulang tahun buatan aku sendiri!",
-        "Surprise date spesial malam ini!",
-        "Voucher peluk gratis sepuasnya!"
-    ];
-    const suratCinta = `
-        Dear kamu yang spesial,<br><br>
-        Aku nggak bisa bilang semua dengan kata-kata, tapi aku harap hari ini bener-bener bikin kamu bahagia. 
-        Terima kasih udah jadi kamu yang luar biasa. Jangan pernah berubah ya.<br><br>
-        Love you always!
-    `;
+    const music = document.getElementById('music');
+    const noWhatsapp = "6281234567890"; // Ganti nomor WA kamu
 
-    function pecahkanBalon() {
-        bgMusic.play();
-        document.getElementById('balon').style.display = 'none';
-        document.getElementById('pesanRahasia').classList.remove('hidden');
-        const randomPesan = pesanRahasia[Math.floor(Math.random() * pesanRahasia.length)];
-        document.getElementById('isiPesan').innerText = randomPesan;
+    function tiupLilin() {
+        document.getElementById('kueLilin').src = 'https://i.imgur.com/KRpmsEh.png'; // Lilin mati
+        music.play();
+        setTimeout(() => {
+            document.getElementById('kueLilin').style.display = 'none';
+            document.getElementById('ucapan').classList.remove('hidden');
+        }, 1000);
     }
 
-    function tampilkanKado() {
-        document.getElementById('pesanRahasia').classList.add('hidden');
-        document.getElementById('kadoContainer').classList.remove('hidden');
+    function pecahkanBalon() {
+        document.getElementById('balon').src = 'https://i.imgur.com/uxICXLr.png'; // Balon pecah
+        confettiEffect();
+        setTimeout(() => {
+            document.getElementById('ucapan').classList.add('hidden');
+            document.getElementById('hadiah').classList.remove('hidden');
+        }, 1500);
     }
 
     function bukaKado() {
-        document.getElementById('kado').style.display = 'none';
-        const randomHadiah = hadiahSpesial[Math.floor(Math.random() * hadiahSpesial.length)];
-        document.getElementById('isiKado').innerText = "Kadonya adalah: " + randomHadiah;
-        document.getElementById('isiKado').classList.remove('hidden');
-        setTimeout(() => {
-            tampilkanSurat();
-        }, 2000);
+        document.getElementById('hadiah').classList.add('hidden');
+        document.getElementById('doa').classList.remove('hidden');
     }
 
-    function tampilkanSurat() {
-        document.getElementById('kadoContainer').classList.add('hidden');
-        document.getElementById('suratContainer').classList.remove('hidden');
+    function kirimPesan() {
+        const pesan = document.getElementById('pesan').value;
+        if (pesan.trim() === "") {
+            alert("Tulis pesan dulu ya!");
+            return;
+        }
+        const link = `https://wa.me/${noWhatsapp}?text=${encodeURIComponent("Pesan untuk kamu: " + pesan)}`;
+        window.open(link, "_blank");
     }
 
-    function bukaSurat() {
-        document.getElementById('surat').style.display = 'none';
-        document.getElementById('isiSurat').innerHTML = suratCinta;
-        document.getElementById('isiSurat').classList.remove('hidden');
+    function confettiEffect() {
+        for (let i = 0; i < 30; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.background = getRandomColor();
+            confetti.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 2000);
+        }
+    }
+
+    function getRandomColor() {
+        const colors = ['red', 'blue', 'green', 'yellow', 'pink', 'purple', 'orange'];
+        return colors[Math.floor(Math.random() * colors.length)];
     }
 </script>
 
