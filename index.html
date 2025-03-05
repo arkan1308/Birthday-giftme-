@@ -3,114 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ucapan Spesial Buat Kamu!</title>
+    <title>Ucapan Spesial Untukmu!</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         body {
-            font-family: Arial, sans-serif;
-            background-image: url('background.jpg');
-            background-size: cover;
-            background-position: center;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden;
+            background: url('background.jpg') no-repeat center center/cover;
+            font-family: Arial, sans-serif;
+            margin: 0;
         }
         .container {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255,255,255,0.9);
             padding: 20px;
-            text-align: center;
             border-radius: 15px;
+            text-align: center;
             box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            animation: fadeIn 1s ease-out;
-        }
-        img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 10px;
         }
         button {
-            padding: 10px 20px;
+            padding: 10px 15px;
+            margin: 10px;
             font-size: 16px;
-            background-color: #ff5f5f;
-            color: white;
+            cursor: pointer;
             border: none;
             border-radius: 5px;
+            background: #ff5f5f;
+            color: white;
+        }
+        img {
+            width: 120px;
             cursor: pointer;
+        }
+        #balon, #kado, #surat {
+            display: inline-block;
             margin: 5px;
         }
-        .gift, .final-message {
+        .hidden {
             display: none;
-            margin-top: 15px;
-        }
-        .gift p, .final-message p {
-            margin: 5px 0;
-        }
-        @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
         }
     </style>
 </head>
 <body>
-    <audio id="bgMusic" src="musik.mp3" loop></audio>
-    <div class="container">
-        <img src="foto.jpg" alt="Foto Spesial">
-        <h2>Hai MAS Kesayangan!</h2>
-        <p>Hari ini istimewa banget, karena ini hari ulang tahunmu!</p>
-        <p>Ada pesan spesial dan kejutan kecil buat kamu nih.</p>
-        <button onclick="mulaiUcapan()">Lihat Pesan</button>
 
-        <div class="gift">
-            <p><strong>Pesan buat kamu:</strong></p>
-            <p id="pesanText"></p>
-            <button onclick="bukaKado()">Buka Kado Spesial</button>
-        </div>
+<audio id="bgMusic" src="musik.mp3" loop></audio>
 
-        <div class="final-message">
-            <p><strong>Kado untuk kamu adalah...</strong></p>
-            <p id="hadiahText"></p>
-            <p>Semoga kamu suka ya! Jangan lupa selalu senyum hari ini!</p>
-            <p>Love you!</p>
-        </div>
+<div class="container">
+    <h2>Hai, MAS Kesayangan!</h2>
+    <p>Ada banyak kejutan buat kamu. Pecahkan balon dulu ya!</p>
+    
+    <div>
+        <img src="balon.png" alt="Balon" id="balon" onclick="pecahkanBalon()">
     </div>
 
-    <script>
-        const pesanUcapan = [
-            "Selamat ulang tahun ya! Semoga sehat selalu dan bahagia tiap hari.",
-            "Doa terbaik buat kamu, sukses terus ya!",
-            "Pokoknya aku selalu dukung kamu apapun yang terjadi!",
-            "Semoga semua impianmu jadi nyata!"
-        ];
+    <div id="pesanRahasia" class="hidden">
+        <p>Yeay! Ini pesan rahasia buat kamu:</p>
+        <p id="isiPesan"></p>
+        <button onclick="tampilkanKado()">Buka Kado</button>
+    </div>
 
-        const hadiahSpesial = [
-            "Liburan bareng ke tempat impian kita!",
-            "Kue ulang tahun spesial buatan aku!",
-            "Satu hari penuh bebas pilih mau ngapain bareng aku!",
-            "Surprise tambahan yang rahasia banget!"
-        ];
+    <div id="kadoContainer" class="hidden">
+        <img src="kado.png" alt="Kado" id="kado" onclick="bukaKado()">
+        <p id="isiKado" class="hidden"></p>
+    </div>
 
-        const music = document.getElementById('bgMusic');
+    <div id="suratContainer" class="hidden">
+        <img src="surat.png" alt="Surat" id="surat" onclick="bukaSurat()">
+        <p id="isiSurat" class="hidden"></p>
+    </div>
+</div>
 
-        function mulaiUcapan() {
-            music.play();
-            const randomPesan = pesanUcapan[Math.floor(Math.random() * pesanUcapan.length)];
-            document.getElementById('pesanText').innerText = randomPesan;
-            document.querySelector('.gift').style.display = 'block';
-        }
+<script>
+    const bgMusic = document.getElementById('bgMusic');
+    const pesanRahasia = [
+        "Selamat ulang tahun, semoga sehat dan bahagia selalu!",
+        "Aku selalu dukung kamu, semangat terus ya!",
+        "Semoga semua impianmu jadi nyata tahun ini!",
+        "Terima kasih sudah selalu ada, kamu hebat!"
+    ];
+    const hadiahSpesial = [
+        "Liburan bareng kita berdua!",
+        "Kue ulang tahun buatan aku sendiri!",
+        "Surprise date spesial malam ini!",
+        "Voucher peluk gratis sepuasnya!"
+    ];
+    const suratCinta = `
+        Dear kamu yang spesial,<br><br>
+        Aku nggak bisa bilang semua dengan kata-kata, tapi aku harap hari ini bener-bener bikin kamu bahagia. 
+        Terima kasih udah jadi kamu yang luar biasa. Jangan pernah berubah ya.<br><br>
+        Love you always!
+    `;
 
-        function bukaKado() {
-            const randomHadiah = hadiahSpesial[Math.floor(Math.random() * hadiahSpesial.length)];
-            document.getElementById('hadiahText').innerText = randomHadiah;
-            document.querySelector('.final-message').style.display = 'block';
-        }
-    </script>
+    function pecahkanBalon() {
+        bgMusic.play();
+        document.getElementById('balon').style.display = 'none';
+        document.getElementById('pesanRahasia').classList.remove('hidden');
+        const randomPesan = pesanRahasia[Math.floor(Math.random() * pesanRahasia.length)];
+        document.getElementById('isiPesan').innerText = randomPesan;
+    }
+
+    function tampilkanKado() {
+        document.getElementById('pesanRahasia').classList.add('hidden');
+        document.getElementById('kadoContainer').classList.remove('hidden');
+    }
+
+    function bukaKado() {
+        document.getElementById('kado').style.display = 'none';
+        const randomHadiah = hadiahSpesial[Math.floor(Math.random() * hadiahSpesial.length)];
+        document.getElementById('isiKado').innerText = "Kadonya adalah: " + randomHadiah;
+        document.getElementById('isiKado').classList.remove('hidden');
+        setTimeout(() => {
+            tampilkanSurat();
+        }, 2000);
+    }
+
+    function tampilkanSurat() {
+        document.getElementById('kadoContainer').classList.add('hidden');
+        document.getElementById('suratContainer').classList.remove('hidden');
+    }
+
+    function bukaSurat() {
+        document.getElementById('surat').style.display = 'none';
+        document.getElementById('isiSurat').innerHTML = suratCinta;
+        document.getElementById('isiSurat').classList.remove('hidden');
+    }
+</script>
+
 </body>
 </html>
