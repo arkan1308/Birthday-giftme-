@@ -3,151 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: url('https://i.imgur.com/5JzE7UK.jpg') no-repeat center center/cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-        .container {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
-        img {
-            width: 150px;
-            cursor: pointer;
-        }
-        button {
-            padding: 10px 15px;
-            background: #ff5f5f;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        textarea {
-            width: 80%;
-            height: 80px;
-            margin: 10px 0;
-        }
-        .hidden {
-            display: none;
-        }
-        #ucapan img {
-            width: 200px;
-            border-radius: 10px;
-        }
-        #balon {
-            width: 100px;
-        }
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: red;
-            border-radius: 50%;
-            animation: fall 2s linear;
-        }
-        @keyframes fall {
-            from {transform: translateY(-100px);}
-            to {transform: translateY(100vh);}
-        }
-    </style>
+    <meta name="description" content="Ucapan selamat ulang tahun online spesial untukmu!">
+    <meta name="keywords" content="ucapan ulang tahun, kartu ucapan online, hadiah ulang tahun">
+    <meta name="author" content="Dika Tutorial">
+    <title>Ucapan Selamat Ulang Tahun Spesial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<audio id="music" src="https://dekatutorial.github.io/Gellen%20Martadinata%20-%20Selamat%20Ulang%20Tahun.mp3" loop></audio>
-
-<div class="container">
-    <h2>Selamat Ulang Tahun!</h2>
-    <p>Tiup lilinnya dulu ya!</p>
-    <img src="https://i.imgur.com/NjrzwrR.gif" id="kueLilin" onclick="tiupLilin()">
-
-    <div id="ucapan" class="hidden">
-        <img src="https://i.imgur.com/1ThdFVZ.jpg" alt="Foto">
-        <h3>Selamat Ulang Tahun, MAS Tersayang!</h3>
-        <p>Semoga hari ini penuh kebahagiaan.</p>
-        <p>Tekan balon ini buat kejutan!</p>
-        <img src="https://i.imgur.com/KwNzdVY.png" id="balon" onclick="pecahkanBalon()">
+    <div class="preload"><p>Loading dulu . . .</p></div>
+    <div class="bg"></div>
+    <div class="content">
+        <div class="open">
+            <button class="love-button">
+                <i class="love material-icons-sharp">favorite</i>
+                <h3>Pencet Love nya</h3>
+            </button>
+        </div>
+        <main class="main">
+            <article>
+                <section class="foto">
+                    <div class="img"><img src="foto.jpg" class="fotoku" alt="Foto Ulang Tahun"></div>
+                </section>
+                <section class="hia">
+                    <h2 class="hai">Selamat Ulang Tahun, MAS!</h2>
+                </section>
+                <section class="pesan">
+                    <p>HAPPYBIRTHDAY! Semoga hari ini penuh kebahagiaan dan sukacita.</p>
+                </section>
+                <section class="hadiah">
+                </section>
+                <section class="kado">
+                    <button class="buka-kado">
+                        <img src="https://dekatutorial.github.io/kado_png.png" alt="Kado Ulang Tahun">
+                        <p>Buka Kadonya</p>
+                    </button>
+                </section>
+                <section class="fitur-tambahan">
+                    <button class="share-button">Bagikan</button>
+                    <div class="countdown">Hitung Mundur: <span id="countdown-timer"></span></div>
+                    <div class="komentar">
+                        <h3>Komentar</h3>
+                        <form id="form-komentar">
+                            <textarea placeholder="Tulis komentar..."></textarea>
+                            <button type="submit">Kirim</button>
+                        </form>
+                        <div id="daftar-komentar"></div>
+                    </div>
+                </section>
+            </article>
+        </main>
+        <div class="modal">
+            <i class="close material-icons-sharp">close</i>
+            <div class="hadiah">
+                <h3>Aku punya sesuatu buat kamu</h3>
+                <p>Pilih salah satu ya ><</p>
+                <div class="pilihkado">
+                    <div>
+                        <img src="https://dekatutorial.github.io/kado_png.png" alt="Kado 1">
+                        <p>1</p>
+                    </div>
+                    <div>
+                        <img src="https://dekatutorial.github.io/kado_png.png" alt="Kado 2">
+                        <p>2</p>
+                    </div>
+                    <div>
+                        <img src="https://dekatutorial.github.io/kado_png.png" alt="Kado 3">
+                        <p>3</p>
+                    </div>
+                    <div>
+                        <img src="https://dekatutorial.github.io/kado_png.png" alt="Kado 4">
+                        <p>4</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div id="hadiah" class="hidden">
-        <p>Ini dia kadonya!</p>
-        <img src="https://i.imgur.com/GFKAtEc.png" onclick="bukaKado()">
-    </div>
-
-    <div id="doa" class="hidden">
-        <p>Doa dan harapan untukmu:</p>
-        <p>"Semoga sehat selalu, bahagia, sukses, dan semua impianmu terwujud."</p>
-        <p>Aku juga mau dengar pesan dari kamu!</p>
-        <textarea id="pesan" placeholder="Tulis pesan balasan..."></textarea><br>
-        <button onclick="kirimPesan()">Kirim ke WhatsApp</button>
-    </div>
-</div>
-
-<script>
-    const music = document.getElementById('music');
-    const noWhatsapp = "6281234567890"; // Ganti nomor WA kamu
-
-    function tiupLilin() {
-        document.getElementById('kueLilin').src = 'https://i.imgur.com/KRpmsEh.png'; // Lilin mati
-        music.play();
-        setTimeout(() => {
-            document.getElementById('kueLilin').style.display = 'none';
-            document.getElementById('ucapan').classList.remove('hidden');
-        }, 1000);
-    }
-
-    function pecahkanBalon() {
-        document.getElementById('balon').src = 'https://i.imgur.com/uxICXLr.png'; // Balon pecah
-        confettiEffect();
-        setTimeout(() => {
-            document.getElementById('ucapan').classList.add('hidden');
-            document.getElementById('hadiah').classList.remove('hidden');
-        }, 1500);
-    }
-
-    function bukaKado() {
-        document.getElementById('hadiah').classList.add('hidden');
-        document.getElementById('doa').classList.remove('hidden');
-    }
-
-    function kirimPesan() {
-        const pesan = document.getElementById('pesan').value;
-        if (pesan.trim() === "") {
-            alert("Tulis pesan dulu ya!");
-            return;
-        }
-        const link = `https://wa.me/${noWhatsapp}?text=${encodeURIComponent("Pesan untuk kamu: " + pesan)}`;
-        window.open(link, "_blank");
-    }
-
-    function confettiEffect() {
-        for (let i = 0; i < 30; i++) {
-            const confetti = document.createElement('div');
-            confetti.classList.add('confetti');
-            confetti.style.background = getRandomColor();
-            confetti.style.left = Math.random() * 100 + 'vw';
-            document.body.appendChild(confetti);
-            setTimeout(() => confetti.remove(), 2000);
-        }
-    }
-
-    function getRandomColor() {
-        const colors = ['red', 'blue', 'green', 'yellow', 'pink', 'purple', 'orange'];
-        return colors[Math.floor(Math.random() * colors.length)];
-    }
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
