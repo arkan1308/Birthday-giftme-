@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <title>Ucapan Ultah Interaktif</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -10,140 +11,136 @@
             background-size: cover; display: flex; justify-content: center; align-items: center;
             overflow: hidden;
         }
-        .screen, #ucapan, #suratBox, #bonekaBox, #doaBox {
+        .screen, #ucapan, #giftBox, #doaBox {
             position: absolute; width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center;
         }
         .hidden { display: none; }
         .balloon {
-            width: 100px; height: 130px; background-color: #ff6f61;
+            width: 120px; height: 160px; background-color: #ff6f61;
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
             color: white; font-weight: bold; cursor: pointer;
-            position: relative; animation: float 3s ease-in-out infinite;
-            margin: 0 10px;
+            animation: float 3s ease-in-out infinite; position: relative;
+            margin: 10px;
         }
-        .string { width: 2px; height: 100px; background-color: #555; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); }
-        .explosion {
-            width: 150px; height: 150px; background: url('explosion.png') no-repeat center center;
-            background-size: contain; animation: explode 0.5s forwards; pointer-events: none;
+        .string {
+            width: 2px; height: 120px; background-color: #555;
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
         }
-        #suratBox { display: none; }
-        .surat { width: 300px; height: 200px; background: url('envelope.png') no-repeat center center; background-size: contain; cursor: pointer; }
-        #ucapan { display: none; flex-direction: column; align-items: center; }
-        .container {
-            background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        #surat { width: 200px; cursor: pointer; }
+        #foto {
+            width: 200px; height: 200px; object-fit: cover;
+            border: 5px solid #ff6f61; margin-bottom: 10px;
         }
-        .photo { width: 150px; height: 150px; object-fit: cover; margin-bottom: 10px; border: 3px solid #ff6f61; }
-        #kue { width: 100px; cursor: pointer; margin-top: 10px; }
-        #pilihan { display: none; gap: 10px; flex-direction: column; }
-        button { padding: 10px 20px; background-color: #ff6f61; color: white; border: none; cursor: pointer; }
-        #bonekaBox, #doaBox { display: none; flex-direction: column; align-items: center; gap: 10px; }
-        .boneka { width: 100px; cursor: pointer; }
+        #text { font-size: 18px; text-align: center; margin: 20px; }
+        button {
+            padding: 15px 25px; background-color: #ff6f61; color: white;
+            border: none; border-radius: 5px; cursor: pointer; font-size: 16px;
+        }
+        .bubble {
+            max-width: 80%; background: #fff; border: 3px solid #ff6f61;
+            padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: relative; font-size: 18px; line-height: 1.5;
+        }
+        .bubble::after {
+            content: ''; position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-style: solid;
+            border-width: 20px 15px 0 15px; border-color: #ff6f61 transparent transparent transparent;
+        }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        @keyframes explode { from { transform: scale(0); opacity: 1; } to { transform: scale(1); opacity: 0; } }
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
-<!-- Balon Intro -->
 <div class="screen" id="intro">
-    <div class="balloon" onclick="meledak(this)">Klik Aku<div class="string"></div></div>
-    <div class="balloon" onclick="meledak(this)">Klik Aku<div class="string"></div></div>
-    <div class="balloon" onclick="meledak(this)">Klik Aku<div class="string"></div></div>
+    <div class="balloon" onclick="explode(this)">Klik Aku!<div class="string"></div></div>
+    <div class="balloon" onclick="explode(this)">Klik Aku!<div class="string"></div></div>
+    <div class="balloon" onclick="explode(this)">Klik Aku!<div class="string"></div></div>
 </div>
 
-<!-- Amplop Surat -->
-<div id="suratBox">
-    <div class="surat" onclick="bukaSurat()"></div>
+<div class="screen hidden" id="suratBox">
+    <img src="surat.png" id="surat" onclick="bukaSurat()">
 </div>
 
-<!-- Ucapan -->
-<div id="ucapan">
-    <div class="container">
-        <img src="foto.jpg" class="photo">
-        <div id="text"></div>
-    </div>
-    <img src="kue.png" id="kue" onclick="munculPilihan()">
-    <div id="pilihan">
-        <button onclick="mauKado()">Mau Kado!</button>
-        <button onclick="nggakUsah()">Nggak Usah</button>
+<div class="screen hidden" id="ucapan">
+    <div style="display:flex;flex-direction:column;align-items:center;">
+        <img src="foto.jpg" id="foto">
+        <div id="text">Selamat ulang tahun! Semoga harimu menyenangkan, sehat selalu, banyak rejeki, dan bahagia sepanjang waktu!</div>
+        <button onclick="munculPilihan()">Klik Kue Untuk Lanjut</button>
     </div>
 </div>
 
-<!-- Pilih Boneka -->
-<div id="bonekaBox">
-    <p>Pilih boneka favoritmu!</p>
-    <img src="bear.png" class="boneka" onclick="pilihBoneka('bear')">
-    <img src="rabbit.png" class="boneka" onclick="pilihBoneka('rabbit')">
-    <img src="cat.png" class="boneka" onclick="pilihBoneka('cat')">
+<div class="screen hidden" id="pilihanBox">
+    <button onclick="mauKado()">Mau Kado!</button>
+    <button onclick="nggakUsah()">Nggak Usah, cukup doanya aja</button>
 </div>
 
-<!-- Doa -->
-<div id="doaBox">
-    <p id="doaText"></p>
+<div class="screen hidden" id="giftBox">
+    <p>Pilih boneka kesukaanmu!</p>
+    <button onclick="pilihBoneka('bear')">Beruang</button>
+    <button onclick="pilihBoneka('rabbit')">Kelinci</button>
+    <button onclick="pilihBoneka('cat')">Kucing</button>
+</div>
+
+<div class="screen hidden" id="doaBox">
+    <div class="bubble">
+        <p id="doaText"></p>
+    </div>
 </div>
 
 <script>
-    let balonMeledak = 0;
-
-    function meledak(balloon) {
-        const explosion = document.createElement('div');
-        explosion.classList.add('explosion');
-        balloon.replaceWith(explosion);
-        balonMeledak++;
-        if (balonMeledak === 3) {
-            setTimeout(() => {
-                document.getElementById('intro').style.display = 'none';
-                document.getElementById('suratBox').style.display = 'flex';
-            }, 500);
+function explode(balloon) {
+    balloon.style.animation = 'explode 0.5s forwards';
+    setTimeout(() => {
+        balloon.remove();
+        if (document.querySelectorAll('.balloon').length === 0) {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('suratBox').classList.remove('hidden');
         }
-    }
+    }, 500);
+}
 
-    function bukaSurat() {
-        document.getElementById('suratBox').style.display = 'none';
-        document.getElementById('ucapan').style.display = 'flex';
-        ketikUcapan();
-    }
+function bukaSurat() {
+    document.getElementById('suratBox').classList.add('hidden');
+    document.getElementById('ucapan').classList.remove('hidden');
+}
 
-    const message = "Selamat Ulang Tahun!\nSemoga semua harapanmu terwujud!";
-    let i = 0;
+function munculPilihan() {
+    document.getElementById('ucapan').classList.add('hidden');
+    document.getElementById('pilihanBox').classList.remove('hidden');
+}
 
-    function ketikUcapan() {
-        if (i < message.length) {
-            document.getElementById('text').innerHTML += message[i] === '\n' ? '<br>' : message[i];
-            i++;
-            setTimeout(ketikUcapan, 50);
-        }
-    }
+function mauKado() {
+    document.getElementById('pilihanBox').classList.add('hidden');
+    document.getElementById('giftBox').classList.remove('hidden');
+}
 
-    function munculPilihan() {
-        document.getElementById('pilihan').style.display = 'flex';
-    }
+function nggakUsah() {
+    tampilkanDoa("Semoga sukses selalu, sehat, bahagia, panjang umur, dan dikelilingi orang-orang baik!");
+}
 
-    function mauKado() {
-        document.getElementById('ucapan').style.display = 'none';
-        document.getElementById('bonekaBox').style.display = 'flex';
-    }
+function pilihBoneka(type) {
+    const doaList = {
+        bear: "Kamu pilih Beruang!\n\nSemoga kamu sekuat beruang menghadapi segala tantangan. Tetap hangat dan penuh cinta seperti beruang madu!",
+        rabbit: "Kamu pilih Kelinci!\n\nSemoga kamu lincah mengejar mimpi, selalu ceria, dan membawa kebahagiaan ke sekitarmu!",
+        cat: "Kamu pilih Kucing!\n\nSemoga hidupmu penuh keberuntungan, seluwes kucing, dan selalu punya tempat nyaman di hati orang tersayang."
+    };
+    tampilkanDoa(doaList[type]);
+}
 
-    function pilihBoneka(type) {
-        const doa = {
-            bear: 'Semoga kamu sekuat beruang dalam menghadapi hidup!',
-            rabbit: 'Semoga kamu seceria dan secepat kelinci meraih mimpi!',
-            cat: 'Semoga kamu seluwes kucing dan beruntung selalu!'
-        };
-        document.getElementById('bonekaBox').style.display = 'none';
-        document.getElementById('doaBox').style.display = 'flex';
-        document.getElementById('doaText').innerText = doa[type];
+function tampilkanDoa(doa) {
+    document.getElementById('giftBox').classList.add('hidden');
+    document.getElementById('doaBox').classList.remove('hidden');
+    document.getElementById('doaText').innerText = doa;
 
-        setTimeout(() => {
-            window.location.href = 'https://wa.me/6283838763673?text=Makasih%20kadonya%20dan%20doanya!';
-        }, 5000);
-    }
-
-    function nggakUsah() {
-        alert('Tetap aku doain yang terbaik buat kamu!');
-        window.location.href = 'https://wa.me/6283838763673?text=Terima%20kasih%20atas%20ucapannya!';
-    }
+    setTimeout(() => {
+        window.location.href = 'https://wa.me/6283838763673?text=Terima%20kasih%20ucapannya!%20Doanya%20indah%20banget!';
+    }, 7000);
+}
 </script>
 
 </body>
