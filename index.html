@@ -11,55 +11,62 @@
         }
         .screen { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; }
         .hidden { display: none; }
-        .balloon { width: 120px; height: 150px; border-radius: 50%; position: absolute; cursor: pointer; }
-        #kue, .giftbox, .boneka { width: 150px; cursor: pointer; }
-        .photo { width: 90vw; max-width: 300px; height: 90vw; max-height: 300px; object-fit: cover; }
-        .chatBubble { background: white; padding: 10px 15px; border-radius: 20px; font-size: 18px; margin: 5px; max-width: 80%; }
-        #kue { position: absolute; bottom: -200px; transition: bottom 1s; }
+        .balloon { width: 80px; height: 100px; border-radius: 50%; cursor: pointer; }
+        .photo { width: 90vw; max-width: 350px; height: 90vw; max-height: 350px; object-fit: cover; }
+        .chatBubble {
+            background: white; padding: 15px; border-radius: 15px; font-size: 16px;
+            max-width: 90%; text-align: center; margin-top: 10px; position: absolute; bottom: 5%;
+        }
+        #kue { width: 150px; position: absolute; bottom: -200px; transition: bottom 1s; cursor: pointer; }
+        #ucapanScreen { gap: 15px; transform: translateY(0); transition: transform 1s; }
+        .giftbox { width: 100px; cursor: pointer; }
+        .boneka { width: 120px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <!-- Intro Balon -->
 <div id="intro" class="screen">
-    <div class="balloon" style="top:30%;left:20%;background:red;" onclick="explode(this)"></div>
-    <div class="balloon" style="top:40%;left:60%;background:blue;" onclick="explode(this)"></div>
-    <div class="balloon" style="top:60%;left:40%;background:green;" onclick="explode(this)"></div>
+    <div class="balloon" style="background:red;" onclick="explode(this)"></div>
+    <div class="balloon" style="background:blue;" onclick="explode(this)"></div>
+    <div class="balloon" style="background:green;" onclick="explode(this)"></div>
 </div>
 
 <!-- Surat -->
 <div id="letterScreen" class="screen hidden">
-    <img src="envelope.png" onclick="openLetter()">
+    <img src="envelope.png" style="width: 200px;" onclick="openLetter()">
 </div>
 
 <!-- Ucapan & Kue -->
 <div id="ucapanScreen" class="screen hidden">
     <img src="foto.jpg" class="photo">
-    <div id="chatBox"></div>
+    <div id="chatBubble" class="chatBubble"></div>
     <img src="kue.png" id="kue" onclick="chooseGiftbox()">
 </div>
 
 <!-- Pilih Giftbox -->
 <div id="giftScreen" class="screen hidden">
-    <div style="display:flex;gap:30px;">
-        <img src="giftbox.png" class="giftbox" onclick="chooseBox('kiri')">
-        <img src="giftbox.png" class="giftbox" onclick="chooseBox('kanan')">
+    <p style="margin-bottom: 10px;">Pilih kotak hadiah:</p>
+    <div style="display:flex;gap:20px;">
+        <img src="giftbox.png" class="giftbox" onclick="chooseBox(true)">
+        <img src="giftbox.png" class="giftbox" onclick="chooseBox(false)">
     </div>
 </div>
 
 <!-- Pilih Boneka -->
 <div id="bonekaScreen" class="screen hidden">
-    <div style="display:flex;gap:20px;overflow-x:auto;width:100%;">
-        <img src="bear.png" class="boneka" onclick="showDoa('bear')">
-        <img src="rabbit.png" class="boneka" onclick="showDoa('rabbit')">
-        <img src="cat.png" class="boneka" onclick="showDoa('cat')">
+    <p style="margin-bottom: 10px;">Pilih boneka kesukaanmu:</p>
+    <div style="display:flex;gap:20px;">
+        <img src="bear.png" class="boneka" onclick="showDoa('Beruang')">
+        <img src="rabbit.png" class="boneka" onclick="showDoa('Kelinci')">
+        <img src="cat.png" class="boneka" onclick="showDoa('Kucing')">
     </div>
 </div>
 
-<!-- Doa Akhir -->
+<!-- Doa -->
 <div id="doaScreen" class="screen hidden">
-    <div class="chatBubble" id="doaText"></div>
-    <button onclick="goToWA()">Kirim Kesan Pesan</button>
+    <div class="chatBubble" id="doaBubble"></div>
+    <button onclick="sendToWA()" style="margin-top: 20px; padding: 10px 20px;">Kirim Pesan & Kesan ke WhatsApp</button>
 </div>
 
 <script>
@@ -75,29 +82,28 @@ function explode(balloon) {
 function openLetter() {
     document.getElementById('letterScreen').classList.add('hidden');
     document.getElementById('ucapanScreen').classList.remove('hidden');
-    typeChat(["Selamat ulang tahun!", "Semoga sehat selalu.", "Bahagia dan sukses menyertaimu."]);
+    typeChat("Selamat ulang tahun! Semoga sehat selalu, bahagia, dan semua cita-cita terkabul.");
 }
 
-function typeChat(messages, index = 0) {
-    if (index < messages.length) {
-        let bubble = document.createElement('div');
-        bubble.className = 'chatBubble';
-        document.getElementById('chatBox').appendChild(bubble);
+function typeChat(message) {
+    let bubble = document.getElementById('chatBubble');
+    bubble.textContent = "";
+    let i = 0;
 
-        let text = messages[index];
-        let i = 0;
-        function typing() {
-            if (i < text.length) {
-                bubble.textContent += text[i++];
-                setTimeout(typing, 50);
-            } else {
-                setTimeout(() => typeChat(messages, index + 1), 500);
-            }
+    function typing() {
+        if (i < message.length) {
+            bubble.textContent += message[i++];
+            setTimeout(typing, 50);
+        } else {
+            setTimeout(naikkanFotoDanChat, 500);
         }
-        typing();
-    } else {
-        document.getElementById('kue').style.bottom = '30px';
     }
+    typing();
+}
+
+function naikkanFotoDanChat() {
+    document.getElementById('ucapanScreen').style.transform = 'translateY(-60px)';
+    setTimeout(() => document.getElementById('kue').style.bottom = '30px', 1000);
 }
 
 function chooseGiftbox() {
@@ -105,33 +111,48 @@ function chooseGiftbox() {
     document.getElementById('giftScreen').classList.remove('hidden');
 }
 
-function chooseBox(side) {
+function chooseBox(lucky) {
     document.getElementById('giftScreen').classList.add('hidden');
-    const lucky = Math.random() > 0.5;
-
     if (lucky) {
         document.getElementById('bonekaScreen').classList.remove('hidden');
     } else {
-        showDoa('kurangBeruntung');
+        showDoa("Panjang");
     }
 }
 
-function showDoa(type) {
+function showDoa(boneka) {
     document.getElementById('bonekaScreen').classList.add('hidden');
     document.getElementById('doaScreen').classList.remove('hidden');
-
-    let doaText = {
-        bear: "Semoga kamu sekuat beruang, menghadapi semua tantangan hidup!",
-        rabbit: "Semoga kamu secepat kelinci dalam mengejar mimpi-mimpimu!",
-        cat: "Semoga kamu seluwes dan seberuntung kucing!",
-        kurangBeruntung: "Yah kamu kurang beruntung, tapi gapapa! Tetap ada doa terbaik buatmu: Semoga sehat, bahagia, dan semua impianmu tercapai!"
-    };
-
-    document.getElementById('doaText').innerText = doaText[type];
+    let doaText = "";
+    if (boneka === "Beruang") {
+        doaText = "Semoga kamu kuat seperti beruang dan selalu melindungi orang yang kamu sayang.";
+    } else if (boneka === "Kelinci") {
+        doaText = "Semoga kamu ceria seperti kelinci, selalu lincah dan membawa kebahagiaan ke semua orang.";
+    } else if (boneka === "Kucing") {
+        doaText = "Semoga kamu selalu santai, tenang, dan penuh kasih sayang seperti kucing yang menggemaskan.";
+    } else {
+        doaText = "Walaupun kamu kurang beruntung, doa terbaik tetap untukmu: Semoga panjang umur, sehat selalu, sukses dalam karir, dan dikelilingi orang baik.";
+    }
+    typeDoa(doaText);
 }
 
-function goToWA() {
-    window.location.href = "https://wa.me/6283838763673?text=Terima%20kasih%20atas%20ucapannya!";
+function typeDoa(message) {
+    let bubble = document.getElementById('doaBubble');
+    bubble.textContent = "";
+    let i = 0;
+
+    function typing() {
+        if (i < message.length) {
+            bubble.textContent += message[i++];
+            setTimeout(typing, 50);
+        }
+    }
+    typing();
+}
+
+function sendToWA() {
+    let waLink = "https://wa.me/62xxxxxx?text=" + encodeURIComponent("Pesan dan kesan setelah dapat kejutan ini...");
+    window.location.href = waLink;
 }
 </script>
 
