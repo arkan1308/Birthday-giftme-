@@ -3,6 +3,9 @@
 <head>
     <title>Ucapan Ultah Interaktif</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preload" as="image" href="background.jpg">
+    <link rel="preload" as="image" href="foto.jpg">
+    <link rel="preload" as="image" href="kue.png">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -87,6 +90,14 @@
             from { transform: scale(0.5); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
+
+        /* Tambahan saran 2 - Responsif kue di layar kecil */
+        @media (max-height: 600px) {
+            #kue {
+                width: 80px;
+                bottom: -100px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -143,7 +154,9 @@
     }
 
     function munculPilihan() {
-        document.getElementById('pilihan').style.display = 'flex';
+        setTimeout(() => {  // Saran 3 - Beri sedikit delay
+            document.getElementById('pilihan').style.display = 'flex';
+        }, 500);
     }
 
     function tampilkanChat(pesan, link) {
