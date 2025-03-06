@@ -6,11 +6,12 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            height: 100vh; font-family: Arial, sans-serif; overflow: hidden;
-            background: url('background.jpg') no-repeat center center; background-size: cover;
-            display: flex; justify-content: center; align-items: center; position: relative;
+            height: 100vh; font-family: Arial, sans-serif;
+            background: url('background.jpg') no-repeat center center;
+            background-size: cover; display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
         }
-        .screen, #ucapan {
+        .screen, #ucapan, #chatBox {
             position: absolute; width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center;
         }
@@ -18,33 +19,52 @@
         .balloon {
             width: 100px; height: 130px; background-color: #ff6f61;
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            color: white; font-weight: bold; cursor: pointer; position: relative;
+            color: white; font-weight: bold; cursor: pointer;
+            animation: float 3s ease-in-out infinite; position: relative;
         }
         .string {
             width: 2px; height: 100px; background-color: #555;
             position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+        }
+        #ucapan {
+            flex-direction: column; align-items: center; justify-content: center;
+            display: none; position: relative;
         }
         .container {
             background: white; padding: 30px; border-radius: 15px;
             text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             position: relative; transition: transform 1s ease;
         }
-        .photo {
-            width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
-            position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
-            border: 3px solid #ff6f61;
+        #ucapan .photo {
+            width: 90px; height: 90px; border-radius: 50%;
+            object-fit: cover; position: absolute; top: -40px; left: 50%;
+            transform: translateX(-50%); border: 3px solid #ff6f61;
         }
-        #text { white-space: pre-wrap; margin-top: 30px; }
-        #kue { width: 120px; position: absolute; bottom: -150px; transition: bottom 1s ease; cursor: pointer; }
-        #pilihan, #hadiahBox, #bonekaBox {
-            display: none; flex-direction: column; align-items: center; gap: 10px;
-            background: white; padding: 20px; border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2); position: absolute; bottom: 50px;
+        #text { white-space: pre-wrap; overflow: hidden; margin-top: 30px; }
+        .cursor { display: inline-block; width: 6px; height: 16px; background: orange; animation: blink 0.7s infinite; }
+        #kue {
+            width: 120px; position: absolute; bottom: -150px;
+            transition: bottom 1s ease; cursor: pointer;
+        }
+        #pilihan {
+            display: none; flex-direction: column; align-items: center; gap: 10px; margin-top: 10px;
         }
         button {
             padding: 10px 20px; background-color: #ff6f61; color: white;
             border: none; border-radius: 5px; cursor: pointer;
         }
+        #chatBox {
+            display: none; position: absolute; z-index: 100;
+            justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.5); width: 100%; height: 100%;
+        }
+        .chatBubble {
+            background: white; padding: 15px 20px; border-radius: 20px;
+            animation: popIn 0.5s ease forwards; opacity: 0;
+        }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes blink { 50% { background: transparent; } }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -53,89 +73,74 @@
     <div class="balloon" onclick="startUcapan()">Klik Aku!<div class="string"></div></div>
 </div>
 
-<div id="ucapan" class="hidden">
+<div id="ucapan">
     <div class="container" id="ucapanBox">
         <img src="foto.jpg" class="photo">
-        <div id="text"></div>
+        <div id="text"></div><span class="cursor"></span>
     </div>
     <img src="kue.png" id="kue" onclick="munculPilihan()">
     <div id="pilihan">
         <button onclick="mauKado()">Mau Kado!</button>
         <button onclick="nggakUsah()">Nggak Usah</button>
     </div>
-    <div id="hadiahBox" onclick="bukaHadiah()">
-        <img src="giftbox.png" style="width: 100px;">
-        <p>Klik untuk buka hadiah!</p>
-    </div>
-    <div id="bonekaBox">
-        <img id="bonekaImg" style="width: 100px;">
-        <p id="bonekaUcapan"></p>
-    </div>
+</div>
+
+<div id="chatBox">
+    <div class="chatBubble" id="chatText">Tulisannya disini...</div>
 </div>
 
 <script>
-function startUcapan() {
-    document.getElementById('intro').classList.add('hidden');
-    document.getElementById('ucapan').classList.remove('hidden');
-    ketikUcapan();
-}
-
-const message = "Cieee yang hari ini tambah umur!\nSelamat ulang tahun MAS, semoga sehat dan bahagia selalu!";
-let i = 0;
-
-function ketikUcapan() {
-    if (i < message.length) {
-        document.getElementById('text').innerHTML += message[i] === '\n' ? '<br>' : message[i];
-        i++;
-        setTimeout(ketikUcapan, 50);
-    } else {
-        setTimeout(naikkanUcapan, 500);
+    function startUcapan() {
+        document.getElementById('intro').style.display = 'none';
+        document.getElementById('ucapan').style.display = 'flex';
+        ketikUcapan();
     }
-}
 
-function naikkanUcapan() {
-    document.getElementById('ucapanBox').style.transform = 'translateY(-120%)';
-    setTimeout(() => document.getElementById('kue').style.bottom = '50px', 500);
-}
+    const message = "Cieee yang hari ini tambah umur!\nSelamat ulang tahun MAS, semoga sehat dan bahagia selalu!";
+    let i = 0;
+    function ketikUcapan() {
+        if (i < message.length) {
+            document.getElementById('text').innerHTML += message[i] === '\n' ? '<br>' : message[i];
+            i++;
+            setTimeout(ketikUcapan, 50);
+        } else {
+            document.querySelector('.cursor').style.display = 'none';
+            setTimeout(naikkanUcapan, 500);
+        }
+    }
 
-function munculPilihan() {
-    document.getElementById('pilihan').style.display = 'flex';
-}
+    function naikkanUcapan() {
+        document.getElementById('ucapanBox').style.transform = 'translateY(-120%)';
+        setTimeout(() => document.getElementById('kue').style.bottom = '50px', 500);
+    }
 
-function mauKado() {
-    document.getElementById('pilihan').style.display = 'none';
-    document.getElementById('hadiahBox').style.display = 'flex';
-}
+    function munculPilihan() {
+        document.getElementById('pilihan').style.display = 'flex';
+    }
 
-const bonekaList = [
-    { src: 'bear.png', doa: 'Semoga kamu sekuat beruang menghadapi hidup.' },
-    { src: 'rabbit.png', doa: 'Semoga kamu seceria kelinci setiap hari.' },
-    { src: 'cat.png', doa: 'Semoga kamu sekalem kucing tapi penuh kejutan.' }
-];
+    function tampilkanChat(pesan, link) {
+        document.getElementById('chatText').innerText = pesan;
+        document.getElementById('chatBox').style.display = 'flex';
+        setTimeout(() => window.location.href = link, 3500);
+    }
 
-function bukaHadiah() {
-    document.getElementById('hadiahBox').style.display = 'none';
+    function mauKado() {
+        let boneka = ["Teddy Bear", "Panda", "Bunny", "Koala"];
+        let doa = [
+            "Semoga sukses selalu!",
+            "Semoga bahagia setiap hari!",
+            "Semoga panjang umur dan sehat!",
+            "Semoga dicintai banyak orang!"
+        ];
+        let index = Math.floor(Math.random() * boneka.length);
+        let hadiah = `Kamu dapat boneka ${boneka[index]}!\nDoa untuk kamu: ${doa[index]}\n\nGimana tanggapannya? Bagus nggak? Bilang ke aku dong!`;
+        tampilkanChat(hadiah, "https://wa.me/6283838763673?text=Wow%20ucapannya%20keren%20banget!");
+    }
 
-    const boneka = bonekaList[Math.floor(Math.random() * bonekaList.length)];
-    document.getElementById('bonekaImg').src = boneka.src;
-    document.getElementById('bonekaUcapan').innerText = boneka.doa;
-
-    document.getElementById('bonekaBox').style.display = 'flex';
-
-    setTimeout(tanyaFeedback, 3000);
-}
-
-function nggakUsah() {
-    document.getElementById('pilihan').style.display = 'none';
-    alert("Yaudah sebagai gantinya, kado ku adalah doa buat kamu: sukses selalu, bahagia selalu, diberi umur panjang, dan dicintai banyak orang.");
-    setTimeout(tanyaFeedback, 1000);
-}
-
-function tanyaFeedback() {
-    const pertanyaan = "Gimana tanggapannya? Bagus nggak? Bilang ke aku dong!";
-    const link = "https://wa.me/6283838763673?text=" + encodeURIComponent(pertanyaan);
-    window.location.href = link;
-}
+    function nggakUsah() {
+        let pesan = "Yaudah deh, sebagai gantinya aku doain:\nSukses selalu, bahagia terus, panjang umur, dan dicintai banyak orang!\n\nGimana tanggapannya? Bagus nggak? Bilang ke aku dong!";
+        tampilkanChat(pesan, "https://wa.me/6283838763673?text=Terima%20kasih%20atas%20ucapannya!");
+    }
 </script>
 
 </body>
