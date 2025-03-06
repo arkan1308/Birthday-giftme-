@@ -43,6 +43,13 @@
             font-weight: bold;
             cursor: pointer;
             animation: float 3s ease-in-out infinite;
+            outline: none; /* Hilangkan border biru */
+            border: none;
+            position: relative;
+            z-index: 2;
+        }
+        .balloon:focus {
+            outline: none; /* Buat jaga-jaga */
         }
         .string {
             width: 2px;
@@ -65,6 +72,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
+            background-color: #fbe7c6; /* Balikin background */
         }
         .container {
             position: relative;
@@ -76,6 +84,7 @@
             border-radius: 15px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             transition: transform 1s ease;
+            margin-top: 60px; /* Geser turun biar gak kejepit */
         }
         .photo {
             width: 100px;
@@ -91,6 +100,7 @@
         #text {
             white-space: pre-wrap;
             overflow: hidden;
+            font-size: 16px;
         }
         .cursor {
             display: inline-block;
@@ -130,10 +140,10 @@
 
 <!-- Halaman Balon -->
 <div class="screen" id="intro">
-    <div class="balloon" onclick="startUcapan()">
+    <button class="balloon" onclick="startUcapan()">
         Klik Aku!
         <div class="string"></div>
-    </div>
+    </button>
 </div>
 
 <!-- Halaman Ucapan -->
@@ -142,7 +152,7 @@
         <img src="foto.jpg" alt="Foto" class="photo">
         <div id="text"></div><span class="cursor"></span>
     </div>
-    <img src="kue.png" id="kue" onclick="munculPilihan()">
+    <img id="kue" onclick="munculPilihan()" src="data:image/png;base64,INSERT_BASE64_IMAGE_HERE">
     <div id="pilihan">
         <button onclick="alert('Yeay! Nih kadonya.. (kamu bisa ganti link ini)')">Mau Kado!</button>
         <button onclick="alert('Oke deh, yang penting bahagia!')">Nggak Usah</button>
