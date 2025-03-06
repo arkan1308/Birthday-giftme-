@@ -9,7 +9,8 @@
             height: 100vh;
             font-family: Arial, sans-serif;
             overflow: hidden;
-            background-color: #fbe7c6;
+            background: url('background.jpg') no-repeat center center;
+            background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -44,11 +45,11 @@
             position: relative; transition: transform 1s ease;
         }
         .photo {
-            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-            position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+            width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
+            position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
             border: 3px solid #ff6f61;
         }
-        #text { white-space: pre-wrap; overflow: hidden; }
+        #text { white-space: pre-wrap; overflow: hidden; margin-top: 30px; }
         .cursor { display: inline-block; width: 6px; height: 16px; background: orange; animation: blink 0.7s infinite; }
         @keyframes blink { 50% { background: transparent; } }
         #kue {
@@ -148,15 +149,15 @@
     function tampilkanChat(pesan, link) {
         document.getElementById('chatText').innerText = pesan;
         document.getElementById('chatBox').style.display = 'flex';
-        setTimeout(() => window.location.href = link, 2000);
+        setTimeout(() => window.location.href = link, 2500);
     }
 
     function mauKado() {
-        tampilkanChat("Langsung chat aku aja ya, kado spesial udah nunggu!", "https://wa.me/62XXXXXXXXXX?text=Hai%20aku%20mau%20kadonya!");
+        tampilkanChat("Cie mau kado, langsung chat aku ya!", "https://wa.me/62XXXXXXXXXX?text=Hai%20aku%20mau%20kadonya!");
     }
 
     function nggakUsah() {
-        tampilkanChat("Yakin ga mau? Kalau mendadak kepikiran, langsung chat aku ya!", "https://wa.me/62XXXXXXXXXX?text=Eh%20aku%20berubah%20pikiran%20nih%20mau%20kadonya!");
+        tampilkanChat("Yakin nih ga mau? Kalo tiba-tiba kangen kado, chat aku ya!", "https://wa.me/62XXXXXXXXXX?text=Eh%20aku%20berubah%20pikiran%20nih%20mau%20kadonya!");
     }
 </script>
 
