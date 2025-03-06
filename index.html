@@ -13,6 +13,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
         .screen, #ucapan, #chatBox {
             position: absolute;
@@ -34,32 +35,52 @@
             width: 2px; height: 100px; background-color: #555;
             position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
         }
-        #ucapan { display: none; flex-direction: column; align-items: center; background: #fbe7c6; }
-        .container { background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        .photo { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
+        #ucapan {
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .container {
+            background: white; padding: 30px; border-radius: 15px;
+            text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            position: relative; transition: transform 1s ease;
+        }
+        .photo {
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
+            position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+            border: 3px solid #ff6f61;
+        }
         #text { white-space: pre-wrap; overflow: hidden; }
         .cursor { display: inline-block; width: 6px; height: 16px; background: orange; animation: blink 0.7s infinite; }
         @keyframes blink { 50% { background: transparent; } }
-        #kue { width: 120px; cursor: pointer; margin-top: 20px; }
-        #pilihan { display: none; margin-top: 20px; }
-        button { padding: 10px 20px; background-color: #ff6f61; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        #chatBox {
+        #kue {
+            width: 120px; position: absolute; bottom: -150px;
+            transition: bottom 1s ease; cursor: pointer;
+        }
+        #pilihan {
             display: none; flex-direction: column; align-items: center;
-            background: rgba(0,0,0,0.5); color: white;
-            position: absolute; z-index: 100; font-size: 18px;
+            gap: 10px; margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px; background-color: #ff6f61;
+            color: white; border: none; border-radius: 5px; cursor: pointer;
+        }
+        #chatBox {
+            display: none; position: absolute; z-index: 100;
+            justify-content: center; align-items: center; background: rgba(0,0,0,0.5);
+            width: 100%; height: 100%;
         }
         .chatBubble {
-            background: white; color: black; padding: 15px 20px;
-            border-radius: 20px; position: relative;
-            animation: popIn 0.5s ease forwards; opacity: 0;
+            background: white; padding: 15px 20px; border-radius: 20px;
+            position: relative; animation: popIn 0.5s ease forwards; opacity: 0;
         }
         .chatBubble::after {
             content: ''; position: absolute; bottom: -15px; left: 50%;
             transform: translateX(-50%);
-            width: 0; height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
+            border: 15px solid transparent;
             border-top: 15px solid white;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
         @keyframes popIn {
             from { transform: scale(0.5); opacity: 0; }
@@ -74,14 +95,14 @@
 </div>
 
 <div id="ucapan">
-    <div class="container">
+    <div class="container" id="ucapanBox">
         <img src="foto.jpg" class="photo">
         <div id="text"></div><span class="cursor"></span>
-        <img src="kue.png" id="kue" onclick="munculPilihan()">
-        <div id="pilihan">
-            <button onclick="mauKado()">Mau Kado!</button>
-            <button onclick="nggakUsah()">Nggak Usah</button>
-        </div>
+    </div>
+    <img src="kue.png" id="kue" onclick="munculPilihan()">
+    <div id="pilihan">
+        <button onclick="mauKado()">Mau Kado!</button>
+        <button onclick="nggakUsah()">Nggak Usah</button>
     </div>
 </div>
 
@@ -99,36 +120,43 @@
         }, 800);
     }
 
-    const message = "Selamat Ulang Tahun! Semoga panjang umur, sehat selalu, dan semua impianmu tercapai!";
+    const message = "Selamat Ulang Tahun!\nSemoga panjang umur, sehat selalu, dan semua impianmu tercapai!";
     let i = 0;
     function ketikUcapan() {
         if (i < message.length) {
-            document.getElementById('text').innerHTML += message[i];
+            document.getElementById('text').innerHTML += message[i] === '\n' ? '<br>' : message[i];
             i++;
             setTimeout(ketikUcapan, 50);
         } else {
             document.querySelector('.cursor').style.display = 'none';
+            setTimeout(naikkanUcapan, 500);
         }
     }
 
+    function naikkanUcapan() {
+        document.getElementById('ucapanBox').style.transform = 'translateY(-120%)';
+        setTimeout(() => {
+            const kue = document.getElementById('kue');
+            kue.style.bottom = '50px';
+        }, 500);
+    }
+
     function munculPilihan() {
-        document.getElementById('pilihan').style.display = 'block';
+        document.getElementById('pilihan').style.display = 'flex';
     }
 
     function tampilkanChat(pesan, link) {
         document.getElementById('chatText').innerText = pesan;
         document.getElementById('chatBox').style.display = 'flex';
-        setTimeout(() => {
-            window.location.href = link;
-        }, 2000);
+        setTimeout(() => window.location.href = link, 2000);
     }
 
     function mauKado() {
-        tampilkanChat("Langsung chat aku aja yaa, aku udah siapin kado spesial nih!", "https://wa.me/62XXXXXXXXXX?text=Hai%20aku%20mau%20kadonya!");
+        tampilkanChat("Langsung chat aku aja ya, kado spesial udah nunggu!", "https://wa.me/62XXXXXXXXXX?text=Hai%20aku%20mau%20kadonya!");
     }
 
     function nggakUsah() {
-        tampilkanChat("Yakin ga mau? Kalau berubah pikiran, chat aku aja yaa!", "https://wa.me/62XXXXXXXXXX?text=Eh%20aku%20berubah%20pikiran%20nih%20mau%20kadonya!");
+        tampilkanChat("Yakin ga mau? Kalau mendadak kepikiran, langsung chat aku ya!", "https://wa.me/62XXXXXXXXXX?text=Eh%20aku%20berubah%20pikiran%20nih%20mau%20kadonya!");
     }
 </script>
 
