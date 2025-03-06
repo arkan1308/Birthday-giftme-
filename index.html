@@ -1,36 +1,68 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Selamat Ulang Tahun!</title>
+    <title>Ucapan Ulang Tahun</title>
     <style>
         body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-family: Arial, sans-serif;
-            background-color: #fbe7c6;
-            text-align: center;
-            padding: 50px;
+            overflow: hidden;
+            background: url('background.jpg') no-repeat center center/cover; /* Ganti background.jpg dengan file kamu */
         }
+
         .card {
-            background-color: #ffcad4;
+            background: rgba(255, 255, 255, 0.85);
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+            width: 90%;
+            max-width: 600px;
         }
-        h1 {
-            color: #ff6f61;
+
+        .photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ff6f61;
+            margin-bottom: 20px;
         }
-        p {
-            font-size: 18px;
-            color: #555;
+
+        #text {
+            font-size: 20px;
+            color: #333;
+            white-space: pre-wrap;
+            overflow: hidden;
+            border-right: .15em solid orange;
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+            animation: typing 4s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: orange }
         }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h1>Selamat Ulang Tahun!</h1>
-    <p>Semoga panjang umur, sehat selalu, dan semua impianmu terwujud.</p>
-    <p>Selamat menikmati hari spesialmu!</p>
+    <img src="foto.jpg" alt="Foto Ulang Tahun" class="photo"> <!-- Ganti foto.jpg dengan file kamu -->
+    <div id="text">Selamat Ulang Tahun! Semoga semua yang kamu impikan bisa terwujud dan selalu bahagia.</div>
 </div>
 
 </body>
