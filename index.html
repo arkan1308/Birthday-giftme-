@@ -6,9 +6,8 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            height: 100vh; font-family: Arial, sans-serif;
-            background: url('background.jpg') no-repeat center center;
-            background-size: cover; display: flex; justify-content: center; align-items: center;
+            height: 100vh; display: flex; justify-content: center; align-items: center;
+            font-family: Arial, sans-serif; background-color: #ffe4e1;
             overflow: hidden;
         }
         .screen {
@@ -17,130 +16,118 @@
         }
         .hidden { display: none; }
         .balloon {
-            width: 100px; height: 130px; background-color: #ff6f61;
+            width: 80px; height: 100px; background-color: #ff6f61;
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            color: white; font-weight: bold; cursor: pointer;
-            position: absolute; animation: float 3s ease-in-out infinite;
+            color: white; font-weight: bold; position: absolute; cursor: pointer;
+            animation: float 3s ease-in-out infinite;
         }
-        .string {
-            width: 2px; height: 100px; background-color: #555;
-            position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+        .string { width: 2px; height: 80px; background-color: #555; position: absolute; top: 100%; }
+        #envelope { width: 150px; cursor: pointer; }
+        .photo { width: 250px; height: 250px; object-fit: cover; border: 5px solid #ff6f61; }
+        button {
+            padding: 10px 20px; background: #ff6f61; color: white; border: none; border-radius: 5px;
+            cursor: pointer; margin: 10px; font-size: 16px;
         }
-        #surat {
-            width: 200px; cursor: pointer;
-        }
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        @keyframes explode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(3); opacity: 0; }
-        }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes explode { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        .fade-in { animation: fadeIn 0.8s ease-out; }
     </style>
 </head>
 <body>
 
-<!-- Intro -->
+<!-- Intro Balon -->
 <div class="screen" id="intro">
     <div id="balloonContainer"></div>
 </div>
 
 <!-- Surat -->
 <div class="screen hidden" id="suratBox">
-    <img src="surat.png" id="surat" onclick="bukaSurat()">
+    <img src="envelope.png" id="envelope" onclick="bukaSurat()" class="fade-in">
 </div>
 
-<!-- Lanjutan (ucapan dll. lanjut seperti sebelumnya) -->
+<!-- Ucapan + Foto -->
 <div class="screen hidden" id="ucapan">
-    <div style="display:flex;flex-direction:column;align-items:center;">
-        <img src="foto.jpg" style="width:200px;height:200px;object-fit:cover;border:5px solid #ff6f61;margin-bottom:10px;">
-        <div style="text-align:center;margin:20px;font-size:18px;">Selamat ulang tahun! Semoga harimu menyenangkan, sehat selalu, banyak rezeki, dan bahagia sepanjang waktu!</div>
-        <button onclick="munculPilihan()">Klik Kue Untuk Lanjut</button>
+    <div style="text-align:center;" class="fade-in">
+        <img src="foto.jpg" class="photo"><br>
+        <p>Selamat Ulang Tahun! Semoga sehat, bahagia, sukses, dan penuh cinta!</p>
+        <button onclick="tampilkanKue()">Klik untuk lanjut</button>
     </div>
 </div>
 
-<div class="screen hidden" id="pilihanBox">
-    <button onclick="mauKado()">Mau Kado!</button>
-    <button onclick="nggakUsah()">Nggak Usah, cukup doa aja</button>
-</div>
-
-<div class="screen hidden" id="giftBox">
+<!-- Pilihan Hadiah -->
+<div class="screen hidden" id="hadiah">
     <p>Pilih boneka kesukaanmu!</p>
     <button onclick="pilihBoneka('bear')">Beruang</button>
     <button onclick="pilihBoneka('rabbit')">Kelinci</button>
     <button onclick="pilihBoneka('cat')">Kucing</button>
 </div>
 
+<!-- Doa dan Pesan Akhir -->
 <div class="screen hidden" id="doaBox">
-    <div style="max-width:80%;background:white;border:3px solid #ff6f61;padding:20px;border-radius:20px;box-shadow:0 4px 10px rgba(0,0,0,0.3);font-size:18px;line-height:1.5;text-align:center;">
+    <div style="background:white;border-radius:15px;padding:15px;box-shadow:0 4px 10px rgba(0,0,0,0.3);text-align:center;" class="fade-in">
+        <img id="bonekaImage" style="width:120px;height:120px;"><br>
         <p id="doaText"></p>
     </div>
 </div>
 
 <script>
-    let balloons = [];
-    let explodedCount = 0;
+    let exploded = 0;
+    const balloons = [];
 
     window.onload = function() {
         const container = document.getElementById('balloonContainer');
         for (let i = 0; i < 5; i++) {
-            const balloon = document.createElement('div');
-            balloon.classList.add('balloon');
-            balloon.innerHTML = 'Klik Aku!<div class="string"></div>';
-            balloon.style.top = `${20 + i * 100}px`;
-            balloon.style.left = `${20 + i * 20}%`;
-            balloon.onclick = () => explode(balloon);
-            container.appendChild(balloon);
-            balloons.push(balloon);
+            const balon = document.createElement('div');
+            balon.className = 'balloon';
+            balon.innerHTML = 'Klik!<div class="string"></div>';
+            balon.style.left = `${Math.random() * 80 + 10}%`;
+            balon.style.top = `${Math.random() * 60 + 20}%`;
+            balon.onclick = () => meledak(balon);
+            container.appendChild(balon);
+            balloons.push(balon);
         }
-    }
+    };
 
-    function explode(balloon) {
-        balloon.style.animation = 'explode 0.5s forwards';
+    function meledak(balon) {
+        balon.style.animation = 'explode 0.5s forwards';
         setTimeout(() => {
-            balloon.remove();
-            explodedCount++;
-            if (explodedCount === balloons.length) {
-                document.getElementById('intro').classList.add('hidden');
-                document.getElementById('suratBox').classList.remove('hidden');
+            balon.remove();
+            exploded++;
+            if (exploded === balloons.length) {
+                transisi('intro', 'suratBox');
             }
         }, 500);
     }
 
     function bukaSurat() {
-        document.getElementById('suratBox').classList.add('hidden');
-        document.getElementById('ucapan').classList.remove('hidden');
+        transisi('suratBox', 'ucapan');
     }
 
-    function munculPilihan() {
-        document.getElementById('ucapan').classList.add('hidden');
-        document.getElementById('pilihanBox').classList.remove('hidden');
-    }
-
-    function mauKado() {
-        document.getElementById('pilihanBox').classList.add('hidden');
-        document.getElementById('giftBox').classList.remove('hidden');
-    }
-
-    function nggakUsah() {
-        tampilkanDoa("Semoga sukses selalu, sehat, bahagia, panjang umur, dan dikelilingi orang-orang baik!");
+    function tampilkanKue() {
+        transisi('ucapan', 'hadiah');
     }
 
     function pilihBoneka(type) {
-        const doaList = {
-            bear: "Kamu pilih Beruang!\nSemoga kamu sekuat beruang menghadapi segala tantangan. Tetap hangat dan penuh cinta seperti beruang madu!",
-            rabbit: "Kamu pilih Kelinci!\nSemoga kamu lincah mengejar mimpi, selalu ceria, dan membawa kebahagiaan ke sekitarmu!",
-            cat: "Kamu pilih Kucing!\nSemoga hidupmu penuh keberuntungan, seluwes kucing, dan selalu punya tempat nyaman di hati orang tersayang."
+        const doa = {
+            bear: "Beruang: Semoga kamu kuat, penuh kasih sayang, dan hangat untuk semua orang di sekitarmu!",
+            rabbit: "Kelinci: Jadilah seceria kelinci, cepat tanggap, dan melompat ke semua mimpi indahmu!",
+            cat: "Kucing: Semoga kamu seberuntung kucing, fleksibel hadapi hidup, dan selalu punya tempat nyaman."
         };
-        tampilkanDoa(doaList[type]);
-    }
-
-    function tampilkanDoa(doa) {
-        document.getElementById('giftBox').classList.add('hidden');
-        document.getElementById('doaBox').classList.remove('hidden');
-        document.getElementById('doaText').innerText = doa;
+        document.getElementById('bonekaImage').src = `${type}.png`;
+        document.getElementById('doaText').innerText = doa[type] + "\n\nTerima kasih sudah main ke sini!";
+        transisi('hadiah', 'doaBox');
 
         setTimeout(() => {
-            window.location.href = 'https://wa.me/6283838763673?text=Terima%20kasih%20ucapannya!%20Doanya%20indah%20banget!';
+            window.location.href = 'https://wa.me/6283838763673?text=Terima%20kasih%20ucapannya%20dan%20hadiahnya!';
         }, 7000);
+    }
+
+    function transisi(hide, show) {
+        document.getElementById(hide).classList.add('hidden');
+        setTimeout(() => {
+            document.getElementById(show).classList.remove('hidden');
+        }, 500);
     }
 </script>
 
