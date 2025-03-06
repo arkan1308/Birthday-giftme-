@@ -16,7 +16,8 @@
             justify-content: center;
             align-items: center;
             font-family: Arial, sans-serif;
-            background: url('background.jpg') no-repeat center center/cover; /* Ganti sesuai file kamu */
+            background: url('background.jpg') no-repeat center center/cover;
+            background-size: cover;
             overflow: hidden;
         }
 
@@ -25,7 +26,7 @@
             width: 90%;
             max-width: 400px;
             text-align: center;
-            padding-top: 70px; /* buat ruang agar foto ada di luar kotak */
+            padding-top: 70px;
         }
 
         .photo {
@@ -36,10 +37,10 @@
             border: 4px solid #ff6f61;
             background-color: white;
             position: absolute;
-            top: -60px; /* benar-benar melayang di atas */
+            top: -60px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 10; /* pastikan foto selalu di atas */
+            z-index: 10;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
@@ -49,7 +50,7 @@
             border-radius: 15px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             position: relative;
-            z-index: 5; /* kotak tetap di belakang foto */
+            z-index: 5;
         }
 
         #text {
@@ -57,30 +58,49 @@
             color: #333;
             white-space: pre-wrap;
             overflow: hidden;
-            border-right: .15em solid orange;
             display: inline-block;
-            animation: typing 4s steps(40, end), blink-caret .75s step-end infinite;
+            text-align: center;
         }
 
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: orange;
+            animation: blink-caret 0.7s infinite;
         }
 
         @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: orange }
+            50% { background-color: transparent; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="foto.jpg" alt="Foto Ulang Tahun" class="photo"> <!-- Ganti dengan foto kamu -->
+    <img src="foto.jpg" alt="Foto Ulang Tahun" class="photo">
     <div class="card">
-        <div id="text">Selamat Ulang Tahun! Semoga semua mimpi dan harapanmu bisa terwujud. Tetap sehat dan bahagia selalu!</div>
+        <div id="text"></div><span class="cursor"></span>
     </div>
 </div>
+
+<script>
+    const text = "Selamat Ulang Tahun! Semoga semua mimpi dan harapanmu bisa terwujud. Tetap sehat dan bahagia selalu!";
+    const textElement = document.getElementById('text');
+    let index = 0;
+
+    function typeEffect() {
+        if (index < text.length) {
+            textElement.innerHTML += text[index];
+            index++;
+            setTimeout(typeEffect, 50); // kecepatan ketikan (50ms per huruf)
+        } else {
+            document.querySelector('.cursor').style.display = 'none'; // hilangin kursor setelah selesai
+        }
+    }
+
+    window.onload = typeEffect;
+</script>
 
 </body>
 </html>
