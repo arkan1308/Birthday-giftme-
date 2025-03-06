@@ -2,129 +2,149 @@
 <html lang="id">
 <head>
     <title>Ucapan Ultah Interaktif</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background: url('background.jpg') no-repeat center center;
-            background-size: cover;
-            height: 100vh;
-            overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
+            height: 100vh; display: flex; justify-content: center; align-items: center;
+            background: url('background.jpg') no-repeat center center / cover;
+            font-family: 'Comic Sans MS', cursive, sans-serif; overflow: hidden;
         }
         .screen { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .hidden { display: none; }
-        .balloon {
-            width: 80px; height: 100px; background: pink;
-            border-radius: 50%; position: absolute;
-            animation: float 3s infinite ease-in-out;
-            display: flex; justify-content: center; align-items: center;
-            color: white; font-weight: bold; cursor: pointer;
-        }
-        .envelope { cursor: pointer; width: 150px; }
-        .letter { background: white; padding: 20px; border-radius: 10px; text-align: center; }
-        .photo { width: 150px; height: 150px; object-fit: cover; }
-        .typing { font-size: 16px; white-space: pre-wrap; }
-        .cake { width: 100px; cursor: pointer; transform: translateY(200%); transition: transform 1s ease-in-out; }
-        .gift-options img { width: 80px; cursor: pointer; }
-        .chatBubble { background: white; padding: 15px; border-radius: 10px; text-align: center; max-width: 80%; }
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        @keyframes explode { from { transform: scale(1); opacity: 1; } to { transform: scale(3); opacity: 0; } }
+        .balloon { width: 80px; height: 100px; background: red; border-radius: 50%; cursor: pointer; position: absolute; animation: float 3s infinite; }
+        .balloon:nth-child(odd) { background: orange; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .letter, .giftChoice { display: flex; flex-direction: column; align-items: center; }
+        img { cursor: pointer; }
+        #text, #chooseText, #chatMessage { font-size: 20px; text-align: center; white-space: pre-wrap; margin-top: 20px; }
+        .photo { width: 200px; height: 200px; object-fit: cover; margin: 10px 0; }
+        #kue { width: 100px; position: absolute; bottom: -100px; transition: bottom 1s; }
+        .giftbox { width: 100px; }
+        #bonekaList img { width: 100px; cursor: pointer; margin: 0 10px; }
+        @keyframes explode { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
     </style>
 </head>
 <body>
 
+<!-- Intro Screen -->
 <div id="intro" class="screen">
-    <div class="balloon" style="top:30%;left:20%;" onclick="popBalloon(this)">Klik Aku!</div>
-    <div class="balloon" style="top:50%;left:50%;" onclick="popBalloon(this)">Klik Aku!</div>
-    <div class="balloon" style="top:70%;left:80%;" onclick="popBalloon(this)">Klik Aku!</div>
-</div>
-
-<div id="envelopeScreen" class="screen hidden">
-    <img src="envelope.png" class="envelope" onclick="openLetter()">
-</div>
-
-<div id="letterScreen" class="screen hidden">
-    <div class="letter">
-        <img src="foto.jpg" class="photo">
-        <div id="typedText" class="typing"></div>
-        <img src="kue.png" class="cake" onclick="showGiftOptions()">
+    <div id="balloons">
+        <div class="balloon" style="top:50%;left:30%;" onclick="explodeBalloon(this)"></div>
+        <div class="balloon" style="top:40%;left:60%;" onclick="explodeBalloon(this)"></div>
+        <div class="balloon" style="top:60%;left:50%;" onclick="explodeBalloon(this)"></div>
     </div>
 </div>
 
-<div id="giftScreen" class="screen hidden">
-    <div class="gift-options">
-        <div style="display: flex; overflow-x: auto;">
-            <img src="bear.png" onclick="chooseGift('bear')">
-            <img src="rabbit.png" onclick="chooseGift('rabbit')">
-            <img src="cat.png" onclick="chooseGift('cat')">
+<!-- Surat -->
+<div id="letterScreen" class="screen hidden">
+    <div class="letter">
+        <img src="envelope.png" width="150" onclick="openLetter()">
+    </div>
+</div>
+
+<!-- Ucapan -->
+<div id="ucapanScreen" class="screen hidden">
+    <div>
+        <img src="foto.jpg" class="photo">
+        <p id="text"></p>
+        <img src="kue.png" id="kue" onclick="showGiftOptions()">
+    </div>
+</div>
+
+<!-- Pilihan Box Kanan Kiri -->
+<div id="chooseBoxScreen" class="screen hidden">
+    <div class="giftChoice">
+        <p id="chooseText"></p>
+        <div style="display: flex; gap: 20px;">
+            <img src="giftbox.png" class="giftbox" onclick="openBox('kiri')">
+            <img src="giftbox.png" class="giftbox" onclick="openBox('kanan')">
         </div>
     </div>
 </div>
 
+<!-- Pilihan Boneka -->
+<div id="giftScreen" class="screen hidden">
+    <div id="bonekaList">
+        <img src="bear.png" onclick="chooseBoneka('bear')">
+        <img src="rabbit.png" onclick="chooseBoneka('rabbit')">
+        <img src="cat.png" onclick="chooseBoneka('cat')">
+    </div>
+</div>
+
+<!-- Chat Message -->
 <div id="chatScreen" class="screen hidden">
-    <div class="chatBubble" id="chatMessage"></div>
+    <p id="chatMessage"></p>
 </div>
 
 <script>
-    let balloonsPopped = 0;
+let balloonsPopped = 0;
+function explodeBalloon(el) {
+    el.style.backgroundImage = "url('explode.png')";
+    el.style.backgroundSize = "cover";
+    el.style.animation = "explode 0.5s forwards";
+    setTimeout(() => { el.remove(); checkAllBalloons(); }, 500);
+}
 
-    function popBalloon(balloon) {
-        balloon.style.animation = 'explode 0.5s forwards';
-        setTimeout(() => {
-            balloon.remove();
-            balloonsPopped++;
-            if (balloonsPopped === 3) {
-                document.getElementById('intro').classList.add('hidden');
-                document.getElementById('envelopeScreen').classList.remove('hidden');
-            }
-        }, 500);
-    }
-
-    function openLetter() {
-        document.getElementById('envelopeScreen').classList.add('hidden');
+function checkAllBalloons() {
+    balloonsPopped++;
+    if (balloonsPopped === 3) {
+        document.getElementById('intro').classList.add('hidden');
         document.getElementById('letterScreen').classList.remove('hidden');
-        typeMessage("Selamat Ulang Tahun!\nSemoga hari ini penuh kebahagiaan dan cinta.");
     }
+}
 
-    function typeMessage(message) {
-        let i = 0;
-        function typing() {
-            if (i < message.length) {
-                document.getElementById('typedText').innerHTML += message[i] === '\n' ? '<br>' : message[i];
-                i++;
-                setTimeout(typing, 50);
-            } else {
-                document.querySelector('.cake').style.transform = 'translateY(0)';
-            }
+function openLetter() {
+    document.getElementById('letterScreen').classList.add('hidden');
+    document.getElementById('ucapanScreen').classList.remove('hidden');
+    typeText("Selamat ulang tahun! Semoga semua impianmu jadi nyata!");
+}
+
+function typeText(text, element = 'text', callback) {
+    let i = 0;
+    document.getElementById(element).innerHTML = '';
+    function typing() {
+        if (i < text.length) {
+            document.getElementById(element).innerHTML += text[i];
+            i++;
+            setTimeout(typing, 50);
+        } else if (callback) {
+            callback();
         }
-        typing();
     }
+    typing();
+}
 
-    function showGiftOptions() {
-        document.getElementById('letterScreen').classList.add('hidden');
+function showGiftOptions() {
+    document.getElementById('ucapanScreen').classList.add('hidden');
+    document.getElementById('chooseBoxScreen').classList.remove('hidden');
+    typeText("Pilih hadiahmu: Kanan atau Kiri?", 'chooseText');
+}
+
+function openBox(choice) {
+    document.getElementById('chooseBoxScreen').classList.add('hidden');
+    let lucky = Math.random() < 0.5;
+    if (lucky) {
         document.getElementById('giftScreen').classList.remove('hidden');
-    }
-
-    function chooseGift(gift) {
-        const messages = {
-            bear: "Semoga kamu selalu kuat dan penuh semangat seperti beruang!",
-            rabbit: "Lari menuju impianmu secepat kelinci ya!",
-            cat: "Semoga hidupmu seluwes dan seberuntung kucing!"
-        };
-
-        showChatBubble(messages[gift]);
-    }
-
-    function showChatBubble(message) {
-        document.getElementById('giftScreen').classList.add('hidden');
+    } else {
         document.getElementById('chatScreen').classList.remove('hidden');
-        document.getElementById('chatMessage').innerHTML = message + "<br><br>Kirim pesan dan kesanmu ya!";
-        setTimeout(() => {
-            window.location.href = "https://wa.me/6283838763673?text=Wow%20ucapannya%20keren%20banget!";
-        }, 5000);
+        typeText("Yah kamu kurang beruntung...\nTapi tetap semangat dan semoga semua harapanmu terkabul!", 'chatMessage', () => {
+            setTimeout(() => window.location.href = "https://wa.me/6283838763673?text=Terima%20kasih%20atas%20ucapan%20dan%20doanya!", 5000);
+        });
     }
+}
+
+function chooseBoneka(boneka) {
+    let doa = {
+        bear: "Semoga kamu sekuat beruang menghadapi tantangan hidup!",
+        rabbit: "Semoga kamu seceria kelinci melompat menuju impian!",
+        cat: "Semoga kamu selincah dan seberuntung kucing!"
+    };
+    document.getElementById('giftScreen').classList.add('hidden');
+    document.getElementById('chatScreen').classList.remove('hidden');
+    typeText(doa[boneka] + "\n\nJangan lupa kirim kesan dan pesan ya!", 'chatMessage', () => {
+        setTimeout(() => window.location.href = "https://wa.me/6283838763673?text=Wow%20ucapannya%20keren%20banget!", 5000);
+    });
+}
 </script>
 
 </body>
