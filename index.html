@@ -2,58 +2,60 @@
 <html lang="id">
 <head>
     <title>Ucapan Ulang Tahun</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        body {
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: Arial, sans-serif;
+            background: url('background.jpg') no-repeat center center/cover; /* Ganti sesuai file kamu */
             overflow: hidden;
-            background: url('background.jpg') no-repeat center center/cover; /* Ganti dengan file background kamu */
         }
 
         .container {
             position: relative;
+            width: 90%;
+            max-width: 400px;
             text-align: center;
         }
 
         .photo {
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 5px solid #ff6f61;
+            border: 4px solid #ff6f61;
             background-color: white;
             position: absolute;
-            top: -75px; /* Naik setengah tinggi foto */
+            top: -60px;
             left: 50%;
             transform: translateX(-50%);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 60px 30px 30px; /* Ruang lebih di atas agar tidak ketimpa foto */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 70px 20px 30px;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             position: relative;
-            width: 90%;
-            max-width: 600px;
         }
 
         #text {
-            font-size: 20px;
+            font-size: 16px;
             color: #333;
             white-space: pre-wrap;
             overflow: hidden;
             border-right: .15em solid orange;
-            width: 100%;
-            margin: 0 auto;
-            text-align: center;
+            display: inline-block;
             animation: typing 4s steps(40, end), blink-caret .75s step-end infinite;
         }
 
@@ -73,7 +75,7 @@
 <div class="container">
     <img src="foto.jpg" alt="Foto Ulang Tahun" class="photo"> <!-- Ganti dengan file foto kamu -->
     <div class="card">
-        <div id="text">Selamat Ulang Tahun! Semoga semua yang kamu impikan bisa terwujud dan selalu bahagia.</div>
+        <div id="text">Selamat Ulang Tahun! Semoga semua mimpi dan harapanmu bisa terwujud. Tetap sehat dan bahagia selalu!</div>
     </div>
 </div>
 
