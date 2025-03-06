@@ -4,70 +4,65 @@
     <title>Ucapan Ultah Interaktif</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             height: 100vh; display: flex; justify-content: center; align-items: center;
-            font-family: Arial, sans-serif; background-color: #ffe4e1;
+            font-family: 'Comic Neue', cursive; background: url('background.jpg') no-repeat center/cover;
             overflow: hidden;
         }
         .screen {
             position: absolute; width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center;
+            background: rgba(255, 255, 255, 0.8);
         }
         .hidden { display: none; }
-        .balloon {
-            width: 80px; height: 100px; background-color: #ff6f61;
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            color: white; font-weight: bold; position: absolute; cursor: pointer;
-            animation: float 3s ease-in-out infinite;
-        }
-        .string { width: 2px; height: 80px; background-color: #555; position: absolute; top: 100%; }
+        .balloon { width: 80px; height: 100px; background: pink; border-radius: 50%; position: absolute; cursor: pointer; animation: float 3s infinite ease-in-out; }
+        .string { height: 60px; width: 2px; background: gray; position: absolute; top: 100%; left: 50%; }
+        img { max-width: 100%; }
         #envelope { width: 150px; cursor: pointer; }
-        .photo { width: 250px; height: 250px; object-fit: cover; border: 5px solid #ff6f61; }
-        button {
-            padding: 10px 20px; background: #ff6f61; color: white; border: none; border-radius: 5px;
-            cursor: pointer; margin: 10px; font-size: 16px;
-        }
+        .photo { width: 200px; height: 200px; border-radius: 10px; object-fit: cover; }
+        #kue { width: 120px; margin-top: 10px; }
+        .boneka { width: 100px; cursor: pointer; }
+        #textBox { text-align: center; max-width: 90%; padding: 10px; background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        @keyframes explode { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-        .fade-in { animation: fadeIn 0.8s ease-out; }
+        @keyframes explode { to { transform: scale(2); opacity: 0; } }
+        @keyframes typing { from { width: 0; } to { width: 100%; } }
+        .typing { overflow: hidden; display: inline-block; white-space: nowrap; animation: typing 3s steps(40, end) forwards; }
     </style>
 </head>
 <body>
 
-<!-- Intro Balon -->
 <div class="screen" id="intro">
     <div id="balloonContainer"></div>
 </div>
 
-<!-- Surat -->
 <div class="screen hidden" id="suratBox">
-    <img src="envelope.png" id="envelope" onclick="bukaSurat()" class="fade-in">
+    <img src="envelope.png" id="envelope" onclick="bukaSurat()">
 </div>
 
-<!-- Ucapan + Foto -->
 <div class="screen hidden" id="ucapan">
-    <div style="text-align:center;" class="fade-in">
-        <img src="foto.jpg" class="photo"><br>
-        <p>Selamat Ulang Tahun! Semoga sehat, bahagia, sukses, dan penuh cinta!</p>
-        <button onclick="tampilkanKue()">Klik untuk lanjut</button>
+    <div id="textBox">
+        <img src="foto.jpg" class="photo"><br><br>
+        <span id="ucapanText"></span>
+        <img src="kue.png" id="kue" onclick="kePilihHadiah()">
     </div>
 </div>
 
-<!-- Pilihan Hadiah -->
-<div class="screen hidden" id="hadiah">
-    <p>Pilih boneka kesukaanmu!</p>
-    <button onclick="pilihBoneka('bear')">Beruang</button>
-    <button onclick="pilihBoneka('rabbit')">Kelinci</button>
-    <button onclick="pilihBoneka('cat')">Kucing</button>
+<div class="screen hidden" id="pilihHadiah">
+    <div style="text-align:center;">
+        <p>Pilih boneka yang kamu suka:</p>
+        <img src="bear.png" class="boneka" onclick="pilihBoneka('bear')">
+        <img src="rabbit.png" class="boneka" onclick="pilihBoneka('rabbit')">
+        <img src="cat.png" class="boneka" onclick="pilihBoneka('cat')">
+    </div>
 </div>
 
-<!-- Doa dan Pesan Akhir -->
 <div class="screen hidden" id="doaBox">
-    <div style="background:white;border-radius:15px;padding:15px;box-shadow:0 4px 10px rgba(0,0,0,0.3);text-align:center;" class="fade-in">
-        <img id="bonekaImage" style="width:120px;height:120px;"><br>
-        <p id="doaText"></p>
+    <div id="textBox">
+        <img id="bonekaImage"><br><br>
+        <span id="doaText"></span>
     </div>
 </div>
 
@@ -75,14 +70,14 @@
     let exploded = 0;
     const balloons = [];
 
-    window.onload = function() {
+    window.onload = () => {
         const container = document.getElementById('balloonContainer');
         for (let i = 0; i < 5; i++) {
             const balon = document.createElement('div');
             balon.className = 'balloon';
-            balon.innerHTML = 'Klik!<div class="string"></div>';
-            balon.style.left = `${Math.random() * 80 + 10}%`;
+            balon.style.left = `${Math.random() * 80}%`;
             balon.style.top = `${Math.random() * 60 + 20}%`;
+            balon.innerHTML = '<div class="string"></div>';
             balon.onclick = () => meledak(balon);
             container.appendChild(balon);
             balloons.push(balon);
@@ -94,39 +89,53 @@
         setTimeout(() => {
             balon.remove();
             exploded++;
-            if (exploded === balloons.length) {
-                transisi('intro', 'suratBox');
-            }
+            if (exploded === balloons.length) transisi('intro', 'suratBox');
         }, 500);
     }
 
-    function bukaSurat() {
-        transisi('suratBox', 'ucapan');
+    function bukaSurat() { transisi('suratBox', 'ucapan', ketikUcapan); }
+
+    function ketikUcapan() {
+        const ucapan = "Selamat ulang tahun! Semoga sehat, bahagia, dan semua impianmu tercapai.";
+        ketikAnimasi("ucapanText", ucapan);
     }
 
-    function tampilkanKue() {
-        transisi('ucapan', 'hadiah');
-    }
+    function kePilihHadiah() { transisi('ucapan', 'pilihHadiah'); }
 
     function pilihBoneka(type) {
         const doa = {
-            bear: "Beruang: Semoga kamu kuat, penuh kasih sayang, dan hangat untuk semua orang di sekitarmu!",
-            rabbit: "Kelinci: Jadilah seceria kelinci, cepat tanggap, dan melompat ke semua mimpi indahmu!",
-            cat: "Kucing: Semoga kamu seberuntung kucing, fleksibel hadapi hidup, dan selalu punya tempat nyaman."
+            bear: "Semoga kamu sekuat dan sehangat pelukan beruang.",
+            rabbit: "Semoga hidupmu ceria, lincah, dan penuh keberuntungan.",
+            cat: "Semoga kamu selalu punya sembilan nyawa keberuntungan!"
         };
-        document.getElementById('bonekaImage').src = `${type}.png`;
-        document.getElementById('doaText').innerText = doa[type] + "\n\nTerima kasih sudah main ke sini!";
-        transisi('hadiah', 'doaBox');
-
-        setTimeout(() => {
-            window.location.href = 'https://wa.me/6283838763673?text=Terima%20kasih%20ucapannya%20dan%20hadiahnya!';
-        }, 7000);
+        document.getElementById('bonekaImage').src = type + ".png";
+        ketikAnimasi("doaText", doa[type], () => {
+            setTimeout(() => {
+                window.location.href = 'https://wa.me/6283838763673?text=Terima%20kasih%20ucapan%20dan%20hadiahnya!';
+            }, 6000);
+        });
+        transisi('pilihHadiah', 'doaBox');
     }
 
-    function transisi(hide, show) {
+    function ketikAnimasi(elId, text, callback) {
+        const el = document.getElementById(elId);
+        el.innerHTML = '';
+        let i = 0;
+        const interval = setInterval(() => {
+            el.innerHTML += text.charAt(i);
+            i++;
+            if (i >= text.length) {
+                clearInterval(interval);
+                if (callback) callback();
+            }
+        }, 50);
+    }
+
+    function transisi(hide, show, after = null) {
         document.getElementById(hide).classList.add('hidden');
         setTimeout(() => {
             document.getElementById(show).classList.remove('hidden');
+            if (after) after();
         }, 500);
     }
 </script>
