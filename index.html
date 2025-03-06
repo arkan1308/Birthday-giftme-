@@ -6,86 +6,126 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            height: 100vh; overflow: hidden;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: url('background.jpg') no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+            overflow: hidden;
             display: flex; justify-content: center; align-items: center;
-            background: url('background.jpg') no-repeat center center / cover;
         }
+        .screen { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .hidden { display: none; }
-        #intro, #surat, #ucapan, #pilihHadiah, #doa {
-            position: absolute; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-        }
         .balloon {
-            width: 80px; height: 100px;
-            background-color: pink; border-radius: 50%;
-            position: absolute; cursor: pointer;
-            animation: float 3s ease-in-out infinite;
+            width: 80px; height: 100px; background: pink;
+            border-radius: 50%; position: absolute;
+            animation: float 3s infinite ease-in-out;
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-weight: bold; cursor: pointer;
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        .explosion {
-            width: 100px; height: 100px;
-            background: url('explode.png');
-            background-size: 1000% 100%; /* 10 frame horizontal */
-            animation: explodeAnim 0.6s steps(10) forwards;
-            position: absolute;
-        }
-        @keyframes explodeAnim {
-            from { background-position-x: 0; }
-            to { background-position-x: -1000%; }
-        }
-        #surat img {
-            width: 200px; cursor: pointer;
-        }
-        @media (max-width: 500px) {
-            #surat img { width: 150px; }
-        }
+        .envelope { cursor: pointer; width: 150px; }
+        .letter { background: white; padding: 20px; border-radius: 10px; text-align: center; }
+        .photo { width: 150px; height: 150px; object-fit: cover; }
+        .typing { font-size: 16px; white-space: pre-wrap; }
+        .cake { width: 100px; cursor: pointer; transform: translateY(200%); transition: transform 1s ease-in-out; }
+        .gift-options img { width: 80px; cursor: pointer; }
+        .chatBubble { background: white; padding: 15px; border-radius: 10px; text-align: center; max-width: 80%; }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes explode { from { transform: scale(1); opacity: 1; } to { transform: scale(3); opacity: 0; } }
     </style>
 </head>
 <body>
 
-<div id="intro">
-    <script>
-        let ledakCount = 0;
-        for (let i = 0; i < 8; i++) {
-            let balloon = document.createElement('div');
-            balloon.className = 'balloon';
-            balloon.style.top = `${Math.random() * 80}%`;
-            balloon.style.left = `${Math.random() * 80}%`;
-            balloon.onclick = () => {
-                ledak(balloon);
-            }
-            document.getElementById('intro').appendChild(balloon);
-        }
+<div id="intro" class="screen">
+    <div class="balloon" style="top:30%;left:20%;" onclick="popBalloon(this)">Klik Aku!</div>
+    <div class="balloon" style="top:50%;left:50%;" onclick="popBalloon(this)">Klik Aku!</div>
+    <div class="balloon" style="top:70%;left:80%;" onclick="popBalloon(this)">Klik Aku!</div>
+</div>
 
-        function ledak(balloon) {
-            let ledakan = document.createElement('div');
-            ledakan.className = 'explosion';
-            ledakan.style.top = balloon.style.top;
-            ledakan.style.left = balloon.style.left;
+<div id="envelopeScreen" class="screen hidden">
+    <img src="envelope.png" class="envelope" onclick="openLetter()">
+</div>
+
+<div id="letterScreen" class="screen hidden">
+    <div class="letter">
+        <img src="foto.jpg" class="photo">
+        <div id="typedText" class="typing"></div>
+        <img src="kue.png" class="cake" onclick="showGiftOptions()">
+    </div>
+</div>
+
+<div id="giftScreen" class="screen hidden">
+    <div class="gift-options">
+        <div style="display: flex; overflow-x: auto;">
+            <img src="bear.png" onclick="chooseGift('bear')">
+            <img src="rabbit.png" onclick="chooseGift('rabbit')">
+            <img src="cat.png" onclick="chooseGift('cat')">
+        </div>
+    </div>
+</div>
+
+<div id="chatScreen" class="screen hidden">
+    <div class="chatBubble" id="chatMessage"></div>
+</div>
+
+<script>
+    let balloonsPopped = 0;
+
+    function popBalloon(balloon) {
+        balloon.style.animation = 'explode 0.5s forwards';
+        setTimeout(() => {
             balloon.remove();
-            document.getElementById('intro').appendChild(ledakan);
+            balloonsPopped++;
+            if (balloonsPopped === 3) {
+                document.getElementById('intro').classList.add('hidden');
+                document.getElementById('envelopeScreen').classList.remove('hidden');
+            }
+        }, 500);
+    }
 
-            setTimeout(() => ledakan.remove(), 600);  // Setelah animasi selesai
+    function openLetter() {
+        document.getElementById('envelopeScreen').classList.add('hidden');
+        document.getElementById('letterScreen').classList.remove('hidden');
+        typeMessage("Selamat Ulang Tahun!\nSemoga hari ini penuh kebahagiaan dan cinta.");
+    }
 
-            ledakCount++;
-            if (ledakCount === 8) {
-                setTimeout(() => {
-                    document.getElementById('intro').classList.add('hidden');
-                    document.getElementById('surat').classList.remove('hidden');
-                }, 500);
+    function typeMessage(message) {
+        let i = 0;
+        function typing() {
+            if (i < message.length) {
+                document.getElementById('typedText').innerHTML += message[i] === '\n' ? '<br>' : message[i];
+                i++;
+                setTimeout(typing, 50);
+            } else {
+                document.querySelector('.cake').style.transform = 'translateY(0)';
             }
         }
-    </script>
-</div>
+        typing();
+    }
 
-<div id="surat" class="hidden">
-    <img src="envelope.png" onclick="bukaSurat()">
-</div>
+    function showGiftOptions() {
+        document.getElementById('letterScreen').classList.add('hidden');
+        document.getElementById('giftScreen').classList.remove('hidden');
+    }
 
-<!-- Lanjutan bagian ucapan, hadiah, doa bisa ditempel di sini (sama seperti sebelumnya) -->
+    function chooseGift(gift) {
+        const messages = {
+            bear: "Semoga kamu selalu kuat dan penuh semangat seperti beruang!",
+            rabbit: "Lari menuju impianmu secepat kelinci ya!",
+            cat: "Semoga hidupmu seluwes dan seberuntung kucing!"
+        };
+
+        showChatBubble(messages[gift]);
+    }
+
+    function showChatBubble(message) {
+        document.getElementById('giftScreen').classList.add('hidden');
+        document.getElementById('chatScreen').classList.remove('hidden');
+        document.getElementById('chatMessage').innerHTML = message + "<br><br>Kirim pesan dan kesanmu ya!";
+        setTimeout(() => {
+            window.location.href = "https://wa.me/6283838763673?text=Wow%20ucapannya%20keren%20banget!";
+        }, 5000);
+    }
+</script>
 
 </body>
 </html>
