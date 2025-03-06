@@ -4,141 +4,88 @@
     <title>Ucapan Ultah Interaktif</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            height: 100vh; display: flex; justify-content: center; align-items: center;
-            font-family: 'Comic Neue', cursive; background: url('background.jpg') no-repeat center/cover;
-            overflow: hidden;
-        }
-        .screen {
-            position: absolute; width: 100%; height: 100%;
+            height: 100vh; overflow: hidden;
             display: flex; justify-content: center; align-items: center;
-            background: rgba(255, 255, 255, 0.8);
+            background: url('background.jpg') no-repeat center center / cover;
         }
         .hidden { display: none; }
-        .balloon { width: 80px; height: 100px; background: pink; border-radius: 50%; position: absolute; cursor: pointer; animation: float 3s infinite ease-in-out; }
-        .string { height: 60px; width: 2px; background: gray; position: absolute; top: 100%; left: 50%; }
-        img { max-width: 100%; }
-        #envelope { width: 150px; cursor: pointer; }
-        .photo { width: 200px; height: 200px; border-radius: 10px; object-fit: cover; }
-        #kue { width: 120px; margin-top: 10px; }
-        .boneka { width: 100px; cursor: pointer; }
-        #textBox { text-align: center; max-width: 90%; padding: 10px; background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        @keyframes explode { to { transform: scale(2); opacity: 0; } }
-        @keyframes typing { from { width: 0; } to { width: 100%; } }
-        .typing { overflow: hidden; display: inline-block; white-space: nowrap; animation: typing 3s steps(40, end) forwards; }
+        #intro, #surat, #ucapan, #pilihHadiah, #doa {
+            position: absolute; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .balloon {
+            width: 80px; height: 100px;
+            background-color: pink; border-radius: 50%;
+            position: absolute; cursor: pointer;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .explosion {
+            width: 100px; height: 100px;
+            background: url('explode.png');
+            background-size: 1000% 100%; /* 10 frame horizontal */
+            animation: explodeAnim 0.6s steps(10) forwards;
+            position: absolute;
+        }
+        @keyframes explodeAnim {
+            from { background-position-x: 0; }
+            to { background-position-x: -1000%; }
+        }
+        #surat img {
+            width: 200px; cursor: pointer;
+        }
+        @media (max-width: 500px) {
+            #surat img { width: 150px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="screen" id="intro">
-    <div id="balloonContainer"></div>
-</div>
-
-<div class="screen hidden" id="suratBox">
-    <img src="envelope.png" id="envelope" onclick="bukaSurat()">
-</div>
-
-<div class="screen hidden" id="ucapan">
-    <div id="textBox">
-        <img src="foto.jpg" class="photo"><br><br>
-        <span id="ucapanText"></span>
-        <img src="kue.png" id="kue" onclick="kePilihHadiah()">
-    </div>
-</div>
-
-<div class="screen hidden" id="pilihHadiah">
-    <div style="text-align:center;">
-        <p>Pilih boneka yang kamu suka:</p>
-        <img src="bear.png" class="boneka" onclick="pilihBoneka('bear')">
-        <img src="rabbit.png" class="boneka" onclick="pilihBoneka('rabbit')">
-        <img src="cat.png" class="boneka" onclick="pilihBoneka('cat')">
-    </div>
-</div>
-
-<div class="screen hidden" id="doaBox">
-    <div id="textBox">
-        <img id="bonekaImage"><br><br>
-        <span id="doaText"></span>
-    </div>
-</div>
-
-<script>
-    let exploded = 0;
-    const balloons = [];
-
-    window.onload = () => {
-        const container = document.getElementById('balloonContainer');
-        for (let i = 0; i < 5; i++) {
-            const balon = document.createElement('div');
-            balon.className = 'balloon';
-            balon.style.left = `${Math.random() * 80}%`;
-            balon.style.top = `${Math.random() * 60 + 20}%`;
-            balon.innerHTML = '<div class="string"></div>';
-            balon.onclick = () => meledak(balon);
-            container.appendChild(balon);
-            balloons.push(balon);
-        }
-    };
-
-    function meledak(balon) {
-        balon.style.animation = 'explode 0.5s forwards';
-        setTimeout(() => {
-            balon.remove();
-            exploded++;
-            if (exploded === balloons.length) transisi('intro', 'suratBox');
-        }, 500);
-    }
-
-    function bukaSurat() { transisi('suratBox', 'ucapan', ketikUcapan); }
-
-    function ketikUcapan() {
-        const ucapan = "Selamat ulang tahun! Semoga sehat, bahagia, dan semua impianmu tercapai.";
-        ketikAnimasi("ucapanText", ucapan);
-    }
-
-    function kePilihHadiah() { transisi('ucapan', 'pilihHadiah'); }
-
-    function pilihBoneka(type) {
-        const doa = {
-            bear: "Semoga kamu sekuat dan sehangat pelukan beruang.",
-            rabbit: "Semoga hidupmu ceria, lincah, dan penuh keberuntungan.",
-            cat: "Semoga kamu selalu punya sembilan nyawa keberuntungan!"
-        };
-        document.getElementById('bonekaImage').src = type + ".png";
-        ketikAnimasi("doaText", doa[type], () => {
-            setTimeout(() => {
-                window.location.href = 'https://wa.me/6283838763673?text=Terima%20kasih%20ucapan%20dan%20hadiahnya!';
-            }, 6000);
-        });
-        transisi('pilihHadiah', 'doaBox');
-    }
-
-    function ketikAnimasi(elId, text, callback) {
-        const el = document.getElementById(elId);
-        el.innerHTML = '';
-        let i = 0;
-        const interval = setInterval(() => {
-            el.innerHTML += text.charAt(i);
-            i++;
-            if (i >= text.length) {
-                clearInterval(interval);
-                if (callback) callback();
+<div id="intro">
+    <script>
+        let ledakCount = 0;
+        for (let i = 0; i < 8; i++) {
+            let balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.style.top = `${Math.random() * 80}%`;
+            balloon.style.left = `${Math.random() * 80}%`;
+            balloon.onclick = () => {
+                ledak(balloon);
             }
-        }, 50);
-    }
+            document.getElementById('intro').appendChild(balloon);
+        }
 
-    function transisi(hide, show, after = null) {
-        document.getElementById(hide).classList.add('hidden');
-        setTimeout(() => {
-            document.getElementById(show).classList.remove('hidden');
-            if (after) after();
-        }, 500);
-    }
-</script>
+        function ledak(balloon) {
+            let ledakan = document.createElement('div');
+            ledakan.className = 'explosion';
+            ledakan.style.top = balloon.style.top;
+            ledakan.style.left = balloon.style.left;
+            balloon.remove();
+            document.getElementById('intro').appendChild(ledakan);
+
+            setTimeout(() => ledakan.remove(), 600);  // Setelah animasi selesai
+
+            ledakCount++;
+            if (ledakCount === 8) {
+                setTimeout(() => {
+                    document.getElementById('intro').classList.add('hidden');
+                    document.getElementById('surat').classList.remove('hidden');
+                }, 500);
+            }
+        }
+    </script>
+</div>
+
+<div id="surat" class="hidden">
+    <img src="envelope.png" onclick="bukaSurat()">
+</div>
+
+<!-- Lanjutan bagian ucapan, hadiah, doa bisa ditempel di sini (sama seperti sebelumnya) -->
 
 </body>
 </html>
