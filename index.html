@@ -149,7 +149,13 @@ function openLetter() {
 function nextChat() {
     const bubbles = document.querySelectorAll('.chatBubble');
     if (chatIndex < bubbles.length - 1) {
-        bubbles[++chatIndex].classList.remove('hidden');
+        chatIndex++;
+        const nextBubble = bubbles[chatIndex];
+        nextBubble.classList.remove('hidden');
+        nextBubble.style.width = '0'; // Reset lebar setiap kali elemen muncul
+        setTimeout(() => {
+            nextBubble.style.width = nextBubble.scrollWidth + 'px'; // Set lebar sesuai dengan panjang teks
+        }, 50); // Menunggu sedikit untuk animasi dimulai
     } else {
         document.getElementById('kue').style.bottom = '30px';
     }
