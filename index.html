@@ -56,26 +56,30 @@
             width: 0; /* Mulai dengan lebar 0 */
             opacity: 0; /* Menyembunyikan teks sampai dimulai animasi */
             transition: width 0.5s, opacity 0.5s; /* Transisi lebar dan opasitas */
-            }
+            display: inline-block;
+        }
 
         @keyframes typing {
             from {
                 width: 0;
                 opacity: 1;
-             }
+            }
             to {
                 width: 100%;
                 opacity: 1;
             }
         }
+
         #kue {
             width: 250px; position: absolute; bottom: -300px;
             transition: bottom 1s; cursor: pointer;
         }
+
         #portraitPhoto {
             width: 60vw; max-width: 300px; aspect-ratio: 3/4; object-fit: cover; border-radius: 15px;
             opacity: 0; transform: translateY(50px); transition: all 1s;
         }
+
         .showPortrait { opacity: 1; transform: translateY(0); }
 
         .giftbox { 
@@ -98,11 +102,11 @@
 </div>
 
 <div id="ucapanScreen" class="screen hidden">
-    <img src="foto.jpg" class="photo">
-    <div class="chatBubble hidden" onclick="nextChat()">Selamat ulang tahun!</div>
-    <div class="chatBubble hidden" onclick="nextChat()">Semoga hari-harimu selalu penuh kebahagiaan.</div>
-    <div class="chatBubble hidden" onclick="nextChat()">Tetap sehat, sukses, dan semua impianmu tercapai.</div>
-    <div class="chatBubble hidden" onclick="nextChat()">Kita semua sayang kamu, semoga selalu diberkahi ya!</div>
+    <img src="foto.jpg" class="photo" id="photo" onload="startChat()">
+    <div class="chatBubble hidden" id="chat1" onclick="nextChat()">Selamat ulang tahun!</div>
+    <div class="chatBubble hidden" id="chat2" onclick="nextChat()">Semoga hari-harimu selalu penuh kebahagiaan.</div>
+    <div class="chatBubble hidden" id="chat3" onclick="nextChat()">Tetap sehat, sukses, dan semua impianmu tercapai.</div>
+    <div class="chatBubble hidden" id="chat4" onclick="nextChat()">Kita semua sayang kamu, semoga selalu diberkahi ya!</div>
     <img src="kue.png" id="kue" onclick="showGiftbox()">
 </div>
 
@@ -140,32 +144,37 @@ function explode(balloon) {
 function openLetter() {
     document.getElementById('letterScreen').classList.add('hidden');
     document.getElementById('ucapanScreen').classList.remove('hidden');
-    document.querySelectorAll('.chatBubble')[0].classList.remove('hidden');
 }
-let chatIndex = 0; // Variabel untuk men-track chat bubble yang ditampilkan
+
+let chatIndex = 0;
+
+function startChat() {
+    // Menunggu foto dimuat, baru memulai chat
+    document.querySelector('#chat1').classList.remove('hidden');
+    nextChat(); // Menampilkan chat pertama
+}
 
 function nextChat() {
-    const bubbles = document.querySelectorAll('.chatBubble'); // Ambil semua elemen dengan kelas chatBubble
-    if (chatIndex < bubbles.length) { // Pastikan masih ada chat bubble yang harus ditampilkan
-        const nextBubble = bubbles[chatIndex]; // Ambil chat bubble berikutnya
+    const bubbles = document.querySelectorAll('.chatBubble');
+    if (chatIndex < bubbles.length) {
+        const nextBubble = bubbles[chatIndex];
+        nextBubble.classList.remove('hidden'); 
+        nextBubble.style.visibility = 'visible';
+        nextBubble.style.width = '0';
+        nextBubble.style.opacity = 1;
 
-        // Menampilkan elemen dan memulai animasi mengetik
-        nextBubble.classList.remove('hidden'); // Menampilkan elemen chat bubble
-        nextBubble.style.visibility = 'visible'; // Membuat elemen bisa terlihat
-        nextBubble.style.width = '0'; // Reset lebar bubble
-        nextBubble.style.opacity = 1; // Membuat teks terlihat
+        const textLength = nextBubble.innerText.length;
+        const typingSpeed = 0.05;
+        const animationDuration = textLength * typingSpeed;
 
-        const textLength = nextBubble.innerText.length; // Menghitung panjang teks
-        const typingSpeed = 0.05; // Kecepatan animasi dalam detik per karakter
-        const animationDuration = textLength * typingSpeed; // Durasi animasi berdasarkan panjang teks
+        nextBubble.style.transition = `width ${animationDuration}s steps(${textLength})`;
+        nextBubble.style.width = nextBubble.scrollWidth + 'px';
 
-        // Menambahkan animasi mengetik (menggunakan animasi CSS)
-        nextBubble.style.transition = `width ${animationDuration}s steps(${textLength})`; // Set transisi animasi typing
-        nextBubble.style.width = nextBubble.scrollWidth + 'px'; // Set lebar bubble sesuai panjang teks
-
-        chatIndex++; // Maju ke chat bubble berikutnya
+        chatIndex++; 
     }
-}function showGiftbox() {
+}
+
+function showGiftbox() {
     document.getElementById('ucapanScreen').classList.add('hidden');
     document.getElementById('giftScreen').classList.remove('hidden');
 }
