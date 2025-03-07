@@ -76,9 +76,22 @@
         }
         .giftbox:hover { transform: scale(1.1); }
         #doaBubble {
-            font-size: 72px; background: white; padding: 20px;
-            border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            font-size: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid black;
+            width: 0;
         }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
         @keyframes slideUp {
             from { bottom: -300px; opacity: 0; }
             to { bottom: 30px; opacity: 1; }
@@ -201,8 +214,13 @@ function showDoa(type) {
     } else if (type === "Kucing") {
         text = "rowr rowr wkwkwkwk kamu emng se imut kucing semoga kamu bertambah imuttt!";
     }
-    document.getElementById('doaBubble').innerText = text;
+    let doaBubble = 
+    document.getElementById('doaBubble');
+    doaBubble.innerText = '';  // Kosongkan dulu
+    doaBubble.style.width = 'auto';
+    typeText(doaBubble, text);
 }
+
 function sendToWA() {
     window.location.href = "https://wa.me/6283838763673?text=Terima kasih atas ucapan ulang tahunnya!";
 }
