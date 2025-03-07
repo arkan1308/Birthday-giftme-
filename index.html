@@ -76,15 +76,17 @@
         }
         .giftbox:hover { transform: scale(1.1); }
         #doaBubble {
-            font-size: 72px;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            white-space: nowrap;
-            overflow: hidden;
-            border-right: 2px solid black;
-            width: 0;
+            font-size: 30px; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3); 
+            white-space: normal;  /* Kembalikan supaya teks bisa wrap */
+            overflow: visible;    /* Bolehkan overflow tampil */
+            border: none;         /* Hilangkan border kanan (efek kursor ketik) */
+            width: auto;          /* Biar otomatis mengikuti isi teks */
+            text-align: center;   /* Supaya rapi tengah */
+            line-height: 1.5;     /* Spasi antar baris lebih nyaman */
         }
 
         @keyframes typing {
