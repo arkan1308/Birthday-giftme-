@@ -56,11 +56,16 @@
             width: 0; /* Mulai dengan lebar 0 */
             opacity: 0; /* Menyembunyikan teks sampai dimulai animasi */
             transition: width 0.5s, opacity 0.5s; /* Transisi lebar dan opasitas */
-        }
+            }
 
-        @keyframes blink {
-            50% {
-        border-color: transparent;
+        @keyframes typing {
+            from {
+                width: 0;
+                opacity: 1;
+             }
+            to {
+                width: 100%;
+                opacity: 1;
             }
         }
         #kue {
@@ -137,32 +142,30 @@ function openLetter() {
     document.getElementById('ucapanScreen').classList.remove('hidden');
     document.querySelectorAll('.chatBubble')[0].classList.remove('hidden');
 }
-   
+let chatIndex = 0; // Variabel untuk men-track chat bubble yang ditampilkan
+
 function nextChat() {
-    const bubbles = document.querySelectorAll('.chatBubble');
-    if (chatIndex < bubbles.length) {
-        const nextBubble = bubbles[chatIndex];
-        
+    const bubbles = document.querySelectorAll('.chatBubble'); // Ambil semua elemen dengan kelas chatBubble
+    if (chatIndex < bubbles.length) { // Pastikan masih ada chat bubble yang harus ditampilkan
+        const nextBubble = bubbles[chatIndex]; // Ambil chat bubble berikutnya
+
         // Menampilkan elemen dan memulai animasi mengetik
-        nextBubble.classList.remove('hidden');
+        nextBubble.classList.remove('hidden'); // Menampilkan elemen chat bubble
         nextBubble.style.visibility = 'visible'; // Membuat elemen bisa terlihat
         nextBubble.style.width = '0'; // Reset lebar bubble
         nextBubble.style.opacity = 1; // Membuat teks terlihat
 
-        const textLength = nextBubble.innerText.length;
+        const textLength = nextBubble.innerText.length; // Menghitung panjang teks
         const typingSpeed = 0.05; // Kecepatan animasi dalam detik per karakter
         const animationDuration = textLength * typingSpeed; // Durasi animasi berdasarkan panjang teks
 
-        // Set width menggunakan setTimeout agar animasi bisa mulai
-        setTimeout(() => {
-            nextBubble.style.transition = `width ${animationDuration}s steps(${textLength})`; // Menyesuaikan durasi dan langkah
-            nextBubble.style.width = nextBubble.scrollWidth + 'px'; // Memulai animasi mengetik
-        }, 100); // Sedikit penundaan agar animasi dimulai dengan benar
+        // Menambahkan animasi mengetik (menggunakan animasi CSS)
+        nextBubble.style.transition = `width ${animationDuration}s steps(${textLength})`; // Set transisi animasi typing
+        nextBubble.style.width = nextBubble.scrollWidth + 'px'; // Set lebar bubble sesuai panjang teks
 
         chatIndex++; // Maju ke chat bubble berikutnya
     }
-}
-function showGiftbox() {
+}function showGiftbox() {
     document.getElementById('ucapanScreen').classList.add('hidden');
     document.getElementById('giftScreen').classList.remove('hidden');
 }
