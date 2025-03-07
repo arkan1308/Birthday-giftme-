@@ -52,8 +52,8 @@
             overflow: hidden; /* Menyembunyikan teks yang belum muncul */
             border-right: 3px solid black; /* Menambahkan kursor berkedip */
             white-space: nowrap;
-            width: 0; /* Mulai dengan lebar 0 untuk mensimulasikan mengetik */
-            animation: typing 2s steps(30) 1s forwards, blink 0.75s step-end infinite;
+            visibility: hidden; /* Menyembunyikan elemen sampai siap untuk ditampilkan */
+            width: 0; /* Mulai dengan lebar 0 */
         }
          @keyframes typing {
             from {
@@ -151,13 +151,20 @@ function nextChat() {
         chatIndex++;
         const nextBubble = bubbles[chatIndex];
         
-        // Menampilkan elemen dan memulai animasi
+        // Menampilkan elemen dan memulai animasi mengetik
         nextBubble.classList.remove('hidden');
         nextBubble.style.visibility = 'visible'; // Membuat elemen bisa terlihat
-        nextBubble.style.width = '0'; // Reset lebar
+        nextBubble.style.width = '0'; // Reset lebar bubble
+
+        const textLength = nextBubble.innerText.length; // Menghitung panjang teks
+        const typingSpeed = 0.1; // Kecepatan animasi dalam detik per karakter
+        const animationDuration = textLength * typingSpeed; // Durasi animasi berdasarkan panjang teks
+
+        // Menunggu sedikit waktu sebelum animasi dimulai
         setTimeout(() => {
-            nextBubble.style.width = nextBubble.scrollWidth + 'px'; // Memulai animasi mengetik dengan lebar sesuai panjang teks
-        }, 50); // Sedikit delay agar animasi dimulai
+            nextBubble.style.transition = `width ${animationDuration}s steps(${textLength})`; // Menyesuaikan durasi dan langkah
+            nextBubble.style.width = nextBubble.scrollWidth + 'px'; // Memulai animasi mengetik
+        }, 100); // Sedikit penundaan agar animasi dimulai dengan benar
     } else {
         document.getElementById('kue').style.bottom = '30px';
     }
