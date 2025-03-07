@@ -204,21 +204,21 @@ function chooseBox(lucky) {
 function showDoa(type) {
     document.getElementById('bonekaScreen').classList.add('hidden');
     document.getElementById('doaScreen').classList.remove('hidden');
-    let text;
-    if (type === "Panjang") {
-        text = "Yahhhh maaf kamu kurang beruntung tapi tidak apa apa semoga kamu bisa beruntung lain kali dan seterusnya ku doakan juka hidupmu penuh keberkahan dan kelimpahan rizky."; // Edit doa panjang di sini
-    } else if (type === "Beruang") {
-        text = "hahahah pilihan bagus. kamu suka beruang!semoga kamu juga bisa sekuat beruang";
-    } else if (type === "Kelinci") {
-        text = "wow kwlinci lucu sekaliiii semoga kamu bisa mengtasi masalah selincah kelinci!";
-    } else if (type === "Kucing") {
-        text = "rowr rowr wkwkwkwk kamu emng se imut kucing semoga kamu bertambah imuttt!";
-    }
-    let doaBubble = 
-document.getElementById('doaBubble');
-    doaBubble.innerText = '';  // Kosongkan dulu
-    doaBubble.style.width = 'auto';
-    typeText(doaBubble, text);
+       let text;
+       if (type === "Panjang") {
+           text = "Yahhhh maaf kamu kurang beruntung tapi tidak apa apa semoga kamu bisa beruntung lain kali dan seterusnya ku doakan juka hidupmu penuh keberkahan dan kelimpahan rizky."; // Edit doa panjang di sini
+       } else if (type === "Beruang") {
+           text = "hahahah pilihan bagus. kamu suka beruang!semoga kamu juga bisa sekuat beruang";
+       } else if (type === "Kelinci") {
+           text = "wow kwlinci lucu sekaliiii semoga kamu bisa mengtasi masalah selincah kelinci!";
+       } else if (type === "Kucing") {
+           text = "rowr rowr wkwkwkwk kamu emng se imut kucing semoga kamu bertambah imuttt!";
+       }
+       let doaBubble = 
+    document.getElementById('doaBubble');
+       doaBubble.innerText = '';  // Kosongkan dulu
+       doaBubble.style.width = 'auto';
+       typeText(doaBubble, text);
 }
 
 function sendToWA() {
