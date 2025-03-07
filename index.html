@@ -15,9 +15,8 @@
             display: flex; justify-content: center; align-items: center; flex-direction: column;
         }
         .hidden { display: none; }
-
         .balloon {
-            width: 200px; height: 280px; border-radius: 50%;
+            width: 100px; height: 140px; border-radius: 50%;
             position: absolute; cursor: pointer;
             animation: float 5s infinite ease-in-out;
         }
@@ -25,68 +24,35 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-60px); }
         }
-
-        .explode { 
+        .explode {
             animation: explodeAnim 0.5s forwards;
             background: url('explode.png') center/contain no-repeat !important;
         }
         @keyframes explodeAnim {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(0); }
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(2); opacity: 0; }
         }
-
         .photo {
-            width: 70vw; max-width: 400px; aspect-ratio: 3/4; object-fit: cover; border-radius: 15px;
+            width: 90vw; max-width: 350px; aspect-ratio: 3/4; object-fit: cover; border-radius: 15px;
         }
-        
         .chatBubble {
-            background: white;
-            padding: 15px;
-            border-radius: 20px;
-            font-size: 30px;
-            max-width: 90%;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            margin: 10px 0;
-            cursor: pointer;
-            overflow: hidden; /* Menyembunyikan teks yang belum muncul */
-            border-right: 3px solid black; /* Menambahkan kursor berkedip */
-            white-space: nowrap;
-            visibility: hidden; /* Menyembunyikan elemen sampai siap untuk ditampilkan */
-            width: 0; /* Mulai dengan lebar 0 */
-            opacity: 0; /* Menyembunyikan teks sampai dimulai animasi */
-            transition: width 0.5s, opacity 0.5s; /* Transisi lebar dan opasitas */
-            display: inline-block;
+            background: #fff4c2; padding: 15px; border-radius: 20px; font-size: 24px;
+            max-width: 90%; box-shadow: 0 4px 6px rgba(0,0,0,0.3); margin: 10px 0;
+            cursor: pointer; display: none;
         }
-
-        @keyframes typing {
-            from {
-                width: 0;
-                opacity: 1;
-            }
-            to {
-                width: 100%;
-                opacity: 1;
-            }
-        }
-
         #kue {
-            width: 250px; position: absolute; bottom: -300px;
+            width: 180px; position: absolute; bottom: -300px;
             transition: bottom 1s; cursor: pointer;
         }
-
-        #portraitPhoto {
-            width: 60vw; max-width: 300px; aspect-ratio: 3/4; object-fit: cover; border-radius: 15px;
-            opacity: 0; transform: translateY(50px); transition: all 1s;
-        }
-
-        .showPortrait { opacity: 1; transform: translateY(0); }
-
-        .giftbox { 
-            width: 240px; height: 240px; object-fit: cover;
-            cursor: pointer; transition: transform 0.3s;
+        .giftbox {
+            width: 160px; height: 160px; object-fit: cover; cursor: pointer;
+            transition: transform 0.3s;
         }
         .giftbox:hover { transform: scale(1.1); }
+        #doaBubble {
+            font-size: 24px; background: white; padding: 20px;
+            border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -98,20 +64,20 @@
 </div>
 
 <div id="letterScreen" class="screen hidden">
-    <img src="envelope.png" style="width: 420px;" onclick="openLetter()">
+    <img src="envelope.png" style="width: 320px; cursor: pointer;" onclick="openLetter()">
 </div>
 
 <div id="ucapanScreen" class="screen hidden">
-    <img src="foto.jpg" class="photo" id="photo" onload="startChat()">
-    <div class="chatBubble hidden" id="chat1" onclick="nextChat()">Selamat ulang tahun!</div>
-    <div class="chatBubble hidden" id="chat2" onclick="nextChat()">Semoga hari-harimu selalu penuh kebahagiaan.</div>
-    <div class="chatBubble hidden" id="chat3" onclick="nextChat()">Tetap sehat, sukses, dan semua impianmu tercapai.</div>
-    <div class="chatBubble hidden" id="chat4" onclick="nextChat()">Kita semua sayang kamu, semoga selalu diberkahi ya!</div>
+    <img src="foto.jpg" class="photo">
+    <div class="chatBubble" id="chat1" onclick="nextChat()">Selamat ulang tahun!</div>
+    <div class="chatBubble" id="chat2" onclick="nextChat()">Semoga hari-harimu penuh kebahagiaan.</div>
+    <div class="chatBubble" id="chat3" onclick="nextChat()">Tetap sehat, sukses, dan semua impian tercapai.</div>
+    <div class="chatBubble" id="chat4" onclick="nextChat()">Kita semua sayang kamu!</div>
     <img src="kue.png" id="kue" class="hidden" onclick="showGiftbox()">
 </div>
 
 <div id="giftScreen" class="screen hidden">
-    <p>Pilih kotak hadiah:</p>
+    <p style="font-size:24px;">Pilih kotak hadiah:</p>
     <div style="display:flex; gap:30px;">
         <img src="giftbox.png" class="giftbox" onclick="chooseBox(true)">
         <img src="giftbox.png" class="giftbox" onclick="chooseBox(false)">
@@ -119,21 +85,21 @@
 </div>
 
 <div id="bonekaScreen" class="screen hidden">
-    <p>Pilih boneka favoritmu:</p>
+    <p style="font-size:24px;">Pilih boneka favoritmu:</p>
     <div style="display:flex;gap:20px;">
-        <img src="bear.png" style="width:140px;cursor:pointer;" onclick="showDoa('Beruang')">
-        <img src="rabbit.png" style="width:140px;cursor:pointer;" onclick="showDoa('Kelinci')">
-        <img src="cat.png" style="width:140px;cursor:pointer;" onclick="showDoa('Kucing')">
+        <img src="bear.png" style="width:120px;cursor:pointer;" onclick="showDoa('Beruang')">
+        <img src="rabbit.png" style="width:120px;cursor:pointer;" onclick="showDoa('Kelinci')">
+        <img src="cat.png" style="width:120px;cursor:pointer;" onclick="showDoa('Kucing')">
     </div>
 </div>
 
 <div id="doaScreen" class="screen hidden">
-    <div class="chatBubble" id="doaBubble" onclick="sendToWA()"></div>
+    <div id="doaBubble" onclick="sendToWA()"></div>
 </div>
 
 <script>
 let balloons = 3;
-let chatIndex = 0; // Indeks untuk mengelola chat bubble
+let chatIndex = 0;
 
 function explode(balloon) {
     balloon.classList.add('explode');
@@ -145,36 +111,24 @@ function explode(balloon) {
 function openLetter() {
     document.getElementById('letterScreen').classList.add('hidden');
     document.getElementById('ucapanScreen').classList.remove('hidden');
+    showChat(0);
 }
 
-function startChat() {
-    // Menunggu foto dimuat, baru memulai chat
-    document.querySelector('#chat1').classList.remove('hidden');
-    nextChat(); // Menampilkan chat pertama
+function showChat(index) {
+    const bubbles = document.querySelectorAll('.chatBubble');
+    if (index < bubbles.length) {
+        bubbles[index].style.display = 'block';
+    }
 }
 
 function nextChat() {
+    chatIndex++;
     const bubbles = document.querySelectorAll('.chatBubble');
     if (chatIndex < bubbles.length) {
-        const nextBubble = bubbles[chatIndex];
-        nextBubble.classList.remove('hidden'); 
-        nextBubble.style.visibility = 'visible';
-        nextBubble.style.width = '0';
-        nextBubble.style.opacity = 1;
-
-        const textLength = nextBubble.innerText.length;
-        const typingSpeed = 0.05;
-        const animationDuration = textLength * typingSpeed;
-
-        nextBubble.style.transition = `width ${animationDuration}s steps(${textLength})`;
-        nextBubble.style.width = nextBubble.scrollWidth + 'px';
-
-        chatIndex++; 
-    }
-
-    // Jika chat terakhir selesai, munculkan kue
-    if (chatIndex === 4) {
+        bubbles[chatIndex].style.display = 'block';
+    } else {
         document.getElementById('kue').classList.remove('hidden');
+        document.getElementById('kue').style.bottom = '30px';
     }
 }
 
@@ -185,20 +139,23 @@ function showGiftbox() {
 
 function chooseBox(lucky) {
     document.getElementById('giftScreen').classList.add('hidden');
-    lucky ? document.getElementById('bonekaScreen').classList.remove('hidden')
-          : showDoa("Panjang");
+    if (lucky) {
+        document.getElementById('bonekaScreen').classList.remove('hidden');
+    } else {
+        showDoa("Panjang");
+    }
 }
 
 function showDoa(type) {
     document.getElementById('bonekaScreen').classList.add('hidden');
     document.getElementById('doaScreen').classList.remove('hidden');
-    const text = type === "Panjang" ? "Doa panjang spesial buatmu..." :
-                 `Semoga kamu bahagia seperti ${type.toLowerCase()}!`;
+    const text = type === "Panjang" ? "Semoga harimu penuh keberkahan dan kebahagiaan selalu."
+                                    : `Semoga bahagia seperti ${type.toLowerCase()} yang lucu!`;
     document.getElementById('doaBubble').innerText = text;
 }
 
 function sendToWA() {
-    window.location.href = "https://wa.me/62xxxxxx?text=Terima kasih untuk ucapan serunya!";
+    window.location.href = "https://wa.me/62xxxxxx?text=Terima kasih atas ucapan ulang tahunnya!";
 }
 </script>
 
