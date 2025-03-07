@@ -81,8 +81,10 @@
     </style>
 </head>
 <body>
+    <audio id="backsound" src="backsound.mp3" autoplay loop></audio>
 
 <div id="intro" class="screen">
+    <audio id="popSound" src="pop.mp3"></audio>
     <div class="balloon" style="background:red; top:60%; left:10%;" onclick="explode(this)"></div>
     <div class="balloon" style="background:blue; top:70%; left:40%;" onclick="explode(this)"></div>
     <div class="balloon" style="background:green; top:65%; left:70%;" onclick="explode(this)"></div>
@@ -128,6 +130,8 @@ let balloons = 3;
 let chatIndex = 0;
 
 function explode(balloon) {
+    document.getElementById('popSound').play();
+    // lanjut kode meletus
     balloon.classList.add('explode');
     setTimeout(() => balloon.remove(), 500);
     balloons--;
