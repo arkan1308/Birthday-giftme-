@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Ucapan Ultah Interaktif</title>
+    <title>Ucapan Ulang Tahun Interaktif</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -14,92 +13,103 @@
         .screen {
             position: absolute; width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center; flex-direction: column;
-            text-align: center;
         }
         .hidden { display: none; }
 
         .balloon {
-            width: 80px; height: 110px; border-radius: 50%;
+            width: 100px; height: 140px; border-radius: 50%;
             position: absolute; cursor: pointer;
             animation: float 5s infinite ease-in-out;
         }
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-50px); }
+            50% { transform: translateY(-60px); }
+        }
+
+        .explode { 
+            animation: explodeAnim 0.5s forwards;
+            background: url('explode.png') center/contain no-repeat !important;
+        }
+        @keyframes explodeAnim {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(0); }
         }
 
         .photo {
-            width: 90vw; max-width: 400px; height: 90vw; max-height: 400px;
-            object-fit: cover; border-radius: 15px;
+            width: 70vw; max-width: 400px; aspect-ratio: 3/4; object-fit: cover; border-radius: 15px;
         }
         .chatBubble {
-            background: white; padding: 20px; border-radius: 20px; font-size: 20px;
-            max-width: 90%; text-align: center; margin-top: 15px;
-            position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            background: white; padding: 15px; border-radius: 20px;
+            font-size: 30px; max-width: 90%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            margin: 10px 0; cursor: pointer;
         }
         #kue {
-            width: 200px; position: absolute; bottom: -250px; transition: bottom 1s; cursor: pointer;
+            width: 250px; position: absolute; bottom: -300px;
+            transition: bottom 1s; cursor: pointer;
         }
-        #ucapanScreen {
-            gap: 15px; transform: translateY(0); transition: transform 1s;
-            align-items: center;
+        #portraitPhoto {
+            width: 60vw; max-width: 300px; aspect-ratio: 3/4; object-fit: cover; border-radius: 15px;
+            opacity: 0; transform: translateY(50px); transition: all 1s;
         }
-        .giftbox { width: 120px; cursor: pointer; }
-        .boneka { width: 140px; cursor: pointer; }
+        .showPortrait { opacity: 1; transform: translateY(0); }
 
-        p, button {
-            font-size: 22px;
+        .giftbox { 
+            width: 120px; height: 120px; object-fit: cover;
+            cursor: pointer; transition: transform 0.3s;
         }
-        button {
-            padding: 12px 25px; cursor: pointer;
-        }
+        .giftbox:hover { transform: scale(1.1); }
     </style>
 </head>
 <body>
 
 <div id="intro" class="screen">
-    <div class="balloon" style="background:red; top:60%; left:20%;" onclick="explode(this)"></div>
-    <div class="balloon" style="background:blue; top:70%; left:50%;" onclick="explode(this)"></div>
-    <div class="balloon" style="background:green; top:65%; left:80%;" onclick="explode(this)"></div>
+    <div class="balloon" style="background:red; top:60%; left:10%;" onclick="explode(this)"></div>
+    <div class="balloon" style="background:blue; top:70%; left:40%;" onclick="explode(this)"></div>
+    <div class="balloon" style="background:green; top:65%; left:70%;" onclick="explode(this)"></div>
 </div>
 
 <div id="letterScreen" class="screen hidden">
-    <img src="envelope.png" style="width: 220px;" onclick="openLetter()">
+    <img src="envelope.png" style="width: 280px;" onclick="openLetter()">
 </div>
 
 <div id="ucapanScreen" class="screen hidden">
     <img src="foto.jpg" class="photo">
-    <div class="chatBubble" id="chatBubble"></div>
-    <img src="kue.png" id="kue" onclick="chooseGiftbox()">
+    <div class="chatBubble hidden" onclick="nextChat()">Selamat ulang tahun!</div>
+    <div class="chatBubble hidden" onclick="nextChat()">Semoga hari-harimu selalu penuh kebahagiaan.</div>
+    <div class="chatBubble hidden" onclick="nextChat()">Tetap sehat, sukses, dan semua impianmu tercapai.</div>
+    <div class="chatBubble hidden" onclick="nextChat()">Kita semua sayang kamu, semoga selalu diberkahi ya!</div>
+    <img src="kue.png" id="kue" onclick="showGiftbox()">
 </div>
 
 <div id="giftScreen" class="screen hidden">
     <p>Pilih kotak hadiah:</p>
-    <div style="display:flex;gap:30px;">
+    <div style="display:flex; gap:30px;">
         <img src="giftbox.png" class="giftbox" onclick="chooseBox(true)">
         <img src="giftbox.png" class="giftbox" onclick="chooseBox(false)">
     </div>
 </div>
 
 <div id="bonekaScreen" class="screen hidden">
-    <p>Pilih boneka kesukaanmu:</p>
-    <div style="display:flex;gap:30px;">
-        <img src="bear.png" class="boneka" onclick="showDoa('Beruang')">
-        <img src="rabbit.png" class="boneka" onclick="showDoa('Kelinci')">
-        <img src="cat.png" class="boneka" onclick="showDoa('Kucing')">
+    <p>Pilih boneka favoritmu:</p>
+    <div style="display:flex;gap:20px;">
+        <img src="bear.png" style="width:140px;cursor:pointer;" onclick="showDoa('Beruang')">
+        <img src="rabbit.png" style="width:140px;cursor:pointer;" onclick="showDoa('Kelinci')">
+        <img src="cat.png" style="width:140px;cursor:pointer;" onclick="showDoa('Kucing')">
     </div>
 </div>
 
 <div id="doaScreen" class="screen hidden">
-    <div class="chatBubble" id="doaBubble"></div>
-    <button onclick="sendToWA()">Kirim Pesan & Kesan ke WhatsApp</button>
+    <div class="chatBubble" id="doaBubble" onclick="sendToWA()"></div>
 </div>
 
 <script>
 let balloons = 3;
+let chatIndex = 0;
 
 function explode(balloon) {
-    balloon.style.background = 'url(explode.png) center/cover';
+    balloon.classList.add('explode');
     setTimeout(() => balloon.remove(), 500);
     balloons--;
     if (balloons === 0) document.getElementById('letterScreen').classList.remove('hidden');
@@ -108,77 +118,39 @@ function explode(balloon) {
 function openLetter() {
     document.getElementById('letterScreen').classList.add('hidden');
     document.getElementById('ucapanScreen').classList.remove('hidden');
-    typeChat("Selamat ulang tahun! Semoga sehat selalu, bahagia, dan semua cita-cita terkabul.");
+    document.querySelectorAll('.chatBubble')[0].classList.remove('hidden');
 }
 
-function typeChat(message) {
-    let bubble = document.getElementById('chatBubble');
-    bubble.innerHTML = ""; 
-    let i = 0;
-
-    function typing() {
-        if (i < message.length) {
-            bubble.innerHTML += message[i++];
-            setTimeout(typing, 50);
-        } else {
-            setTimeout(naikkanFotoDanChat, 500);
-        }
+function nextChat() {
+    const bubbles = document.querySelectorAll('.chatBubble');
+    if (chatIndex < bubbles.length - 1) {
+        bubbles[++chatIndex].classList.remove('hidden');
+    } else {
+        document.getElementById('kue').style.bottom = '30px';
     }
-    typing();
 }
 
-function naikkanFotoDanChat() {
-    document.getElementById('ucapanScreen').style.transform = 'translateY(-50px)';
-    setTimeout(() => document.getElementById('kue').style.bottom = '50px', 1000);
-}
-
-function chooseGiftbox() {
+function showGiftbox() {
     document.getElementById('ucapanScreen').classList.add('hidden');
     document.getElementById('giftScreen').classList.remove('hidden');
 }
 
 function chooseBox(lucky) {
     document.getElementById('giftScreen').classList.add('hidden');
-    if (lucky) {
-        document.getElementById('bonekaScreen').classList.remove('hidden');
-    } else {
-        showDoa("Panjang");
-    }
+    lucky ? document.getElementById('bonekaScreen').classList.remove('hidden')
+          : showDoa("Panjang");
 }
 
-function showDoa(boneka) {
+function showDoa(type) {
     document.getElementById('bonekaScreen').classList.add('hidden');
     document.getElementById('doaScreen').classList.remove('hidden');
-    let doaText = "";
-    if (boneka === "Beruang") {
-        doaText = "Semoga kamu kuat seperti beruang, tegar dalam menghadapi masalah dan selalu melindungi orang tersayang.";
-    } else if (boneka === "Kelinci") {
-        doaText = "Semoga kamu ceria seperti kelinci, penuh semangat menjalani hidup dan membawa kebahagiaan bagi sekitar.";
-    } else if (boneka === "Kucing") {
-        doaText = "Semoga kamu selalu tenang, bijak, dan penuh kasih sayang seperti kucing yang menggemaskan.";
-    } else {
-        doaText = "Yah, kamu belum beruntung... Tapi nggak apa-apa, doa terbaik tetap buat kamu: panjang umur, sehat selalu, sukses, dan bahagia.";
-    }
-    typeDoa(doaText);
-}
-
-function typeDoa(message) {
-    let bubble = document.getElementById('doaBubble');
-    bubble.innerHTML = "";
-    let i = 0;
-
-    function typing() {
-        if (i < message.length) {
-            bubble.innerHTML += message[i++];
-            setTimeout(typing, 50);
-        }
-    }
-    typing();
+    const text = type === "Panjang" ? "Doa panjang spesial buatmu..." :
+                 `Semoga kamu bahagia seperti ${type.toLowerCase()}!`;
+    document.getElementById('doaBubble').innerText = text;
 }
 
 function sendToWA() {
-    let waLink = "https://wa.me/62xxxxxx?text=" + encodeURIComponent("Pesan dan kesan setelah dapat kejutan ini...");
-    window.location.href = waLink;
+    window.location.href = "https://wa.me/62xxxxxx?text=Terima kasih untuk ucapan serunya!";
 }
 </script>
 
