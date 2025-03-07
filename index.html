@@ -65,8 +65,10 @@
             50% { border-color: transparent; }
         }
         #kue {
-            width: 180px; position: absolute; bottom: -300px;
-            transition: bottom 1s; cursor: pointer;
+            width: 180px;
+            position: absolute;
+            bottom: -300px; /* mulai dari luar layar */
+            cursor: pointer;
         }
         .giftbox {
             width: 320px; height: 320px; object-fit: cover; cursor: pointer;
@@ -76,6 +78,10 @@
         #doaBubble {
             font-size: 30px; background: white; padding: 20px;
             border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        @keyframes slideUp {
+            from { bottom: -300px; opacity: 0; }
+            to { bottom: 30px; opacity: 1; }
         }
        
     </style>
@@ -154,15 +160,16 @@ function showChat(index) {
         chatBubble.classList.add('typing');
     }
 }
-
+    
 function nextChat() {
     chatIndex++;
     const bubbles = document.querySelectorAll('.chatBubble');
     if (chatIndex < bubbles.length) {
         showChat(chatIndex);
     } else {
-        document.getElementById('kue').classList.remove('hidden');
-        document.getElementById('kue').style.bottom = '30px';
+        const kue = document.getElementById('kue');
+        kue.classList.remove('hidden');
+        kue.style.animation = 'slideUp 1s ease forwards';
     }
 }
 
