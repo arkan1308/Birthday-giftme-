@@ -76,7 +76,7 @@
         }
         .giftbox:hover { transform: scale(1.1); }
         #doaBubble {
-            font-size: 30px;
+            font-size: 72px;
             background: white;
             padding: 20px;
             border-radius: 15px;
@@ -214,11 +214,11 @@ function showDoa(type) {
     } else if (type === "Kucing") {
         text = "rowr rowr wkwkwkwk kamu emng se imut kucing semoga kamu bertambah imuttt!";
     }
-    let doaBubble = 
-        document.getElementById('doaBubble');
-        doaBubble.innerText = '';  // Kosongkan dulu
-        doaBubble.style.width = 'auto';
-        typeText(doaBubble, text);
+      let doaBubble = 
+    document.getElementById('doaBubble');
+      doaBubble.innerText = '';  // Kosongkan dulu
+      doaBubble.style.width = 'auto';
+      typeText(doaBubble, text);
 }
 
 function sendToWA() {
