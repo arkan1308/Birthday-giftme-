@@ -135,8 +135,10 @@ let balloons = 3;
 let chatIndex = 0;
 
 function explode(balloon) {
+    if (balloons === 3) {  // pas balon pertama diklik, nyalakan backsound
+        document.getElementById('backsound').play();
+    }
     document.getElementById('popSound').play();
-    // lanjut kode meletus
     balloon.classList.add('explode');
     setTimeout(() => balloon.remove(), 500);
     balloons--;
