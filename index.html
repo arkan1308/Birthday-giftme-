@@ -54,7 +54,8 @@
             overflow: hidden;
             width: 0;
             animation: typing 3s steps(30) 1 normal both, blink 0.75s step-end infinite;
-        }
+            word-wrap: break-word; /* Tambahkan baris ini */
+        }        
 
         @keyframes blink {
             50% { border-color: transparent; }
