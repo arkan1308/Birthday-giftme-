@@ -11,37 +11,48 @@
             display: flex; justify-content: center; align-items: center; font-family: 'Comic Sans MS', cursive;
             overflow: hidden;
         }
-        .screen { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        .screen {
+            position: absolute; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
+            text-align: center;
+        }
         .hidden { display: none; }
 
         .balloon {
-            width: 60px; height: 80px; border-radius: 50%;
+            width: 80px; height: 110px; border-radius: 50%;
             position: absolute; cursor: pointer;
             animation: float 5s infinite ease-in-out;
         }
         @keyframes float {
-            0% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-30px) translateX(-10px); }
-            50% { transform: translateY(-60px) translateX(10px); }
-            75% { transform: translateY(-90px) translateX(-10px); }
-            100% { transform: translateY(-120px) translateX(10px); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-50px); }
         }
 
         .photo {
-            width: 90vw; max-width: 350px; height: 90vw; max-height: 350px; object-fit: cover;
-            border-radius: 10px;
+            width: 90vw; max-width: 400px; height: 90vw; max-height: 400px;
+            object-fit: cover; border-radius: 15px;
         }
         .chatBubble {
-            background: white; padding: 15px; border-radius: 15px; font-size: 18px; /* lebih besar */
-            max-width: 90%; text-align: center; margin-top: 10px;
-            position: relative;
+            background: white; padding: 20px; border-radius: 20px; font-size: 20px;
+            max-width: 90%; text-align: center; margin-top: 15px;
+            position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.2);
         }
         #kue {
-            width: 180px; position: absolute; bottom: -200px; transition: bottom 1s; cursor: pointer;
+            width: 200px; position: absolute; bottom: -250px; transition: bottom 1s; cursor: pointer;
         }
-        #ucapanScreen { gap: 10px; transform: translateY(0); transition: transform 1s; align-items: center; }
-        .giftbox { width: 100px; cursor: pointer; }
-        .boneka { width: 120px; cursor: pointer; }
+        #ucapanScreen {
+            gap: 15px; transform: translateY(0); transition: transform 1s;
+            align-items: center;
+        }
+        .giftbox { width: 120px; cursor: pointer; }
+        .boneka { width: 140px; cursor: pointer; }
+
+        p, button {
+            font-size: 22px;
+        }
+        button {
+            padding: 12px 25px; cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -53,7 +64,7 @@
 </div>
 
 <div id="letterScreen" class="screen hidden">
-    <img src="envelope.png" style="width: 200px;" onclick="openLetter()">
+    <img src="envelope.png" style="width: 220px;" onclick="openLetter()">
 </div>
 
 <div id="ucapanScreen" class="screen hidden">
@@ -63,16 +74,16 @@
 </div>
 
 <div id="giftScreen" class="screen hidden">
-    <p style="margin-bottom: 10px; font-size:18px;">Pilih kotak hadiah:</p>
-    <div style="display:flex;gap:20px;">
+    <p>Pilih kotak hadiah:</p>
+    <div style="display:flex;gap:30px;">
         <img src="giftbox.png" class="giftbox" onclick="chooseBox(true)">
         <img src="giftbox.png" class="giftbox" onclick="chooseBox(false)">
     </div>
 </div>
 
 <div id="bonekaScreen" class="screen hidden">
-    <p style="margin-bottom: 10px; font-size:18px;">Pilih boneka kesukaanmu:</p>
-    <div style="display:flex;gap:20px;">
+    <p>Pilih boneka kesukaanmu:</p>
+    <div style="display:flex;gap:30px;">
         <img src="bear.png" class="boneka" onclick="showDoa('Beruang')">
         <img src="rabbit.png" class="boneka" onclick="showDoa('Kelinci')">
         <img src="cat.png" class="boneka" onclick="showDoa('Kucing')">
@@ -81,7 +92,7 @@
 
 <div id="doaScreen" class="screen hidden">
     <div class="chatBubble" id="doaBubble"></div>
-    <button onclick="sendToWA()" style="margin-top: 20px; padding: 10px 20px; font-size:18px;">Kirim Pesan & Kesan ke WhatsApp</button>
+    <button onclick="sendToWA()">Kirim Pesan & Kesan ke WhatsApp</button>
 </div>
 
 <script>
@@ -117,8 +128,8 @@ function typeChat(message) {
 }
 
 function naikkanFotoDanChat() {
-    document.getElementById('ucapanScreen').style.transform = 'translateY(-40px)';
-    setTimeout(() => document.getElementById('kue').style.bottom = '30px', 1000);
+    document.getElementById('ucapanScreen').style.transform = 'translateY(-50px)';
+    setTimeout(() => document.getElementById('kue').style.bottom = '50px', 1000);
 }
 
 function chooseGiftbox() {
@@ -140,13 +151,13 @@ function showDoa(boneka) {
     document.getElementById('doaScreen').classList.remove('hidden');
     let doaText = "";
     if (boneka === "Beruang") {
-        doaText = "Semoga kamu kuat seperti beruang dan selalu melindungi orang yang kamu sayang.";
+        doaText = "Semoga kamu kuat seperti beruang, tegar dalam menghadapi masalah dan selalu melindungi orang tersayang.";
     } else if (boneka === "Kelinci") {
-        doaText = "Semoga kamu ceria seperti kelinci, selalu lincah dan membawa kebahagiaan ke semua orang.";
+        doaText = "Semoga kamu ceria seperti kelinci, penuh semangat menjalani hidup dan membawa kebahagiaan bagi sekitar.";
     } else if (boneka === "Kucing") {
-        doaText = "Semoga kamu selalu santai, tenang, dan penuh kasih sayang seperti kucing yang menggemaskan.";
+        doaText = "Semoga kamu selalu tenang, bijak, dan penuh kasih sayang seperti kucing yang menggemaskan.";
     } else {
-        doaText = "Walaupun kamu kurang beruntung, doa terbaik tetap untukmu: Semoga panjang umur, sehat selalu, sukses dalam karir, dan dikelilingi orang baik.";
+        doaText = "Yah, kamu belum beruntung... Tapi nggak apa-apa, doa terbaik tetap buat kamu: panjang umur, sehat selalu, sukses, dan bahagia.";
     }
     typeDoa(doaText);
 }
