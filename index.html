@@ -107,7 +107,7 @@
     <div class="chatBubble hidden" id="chat2" onclick="nextChat()">Semoga hari-harimu selalu penuh kebahagiaan.</div>
     <div class="chatBubble hidden" id="chat3" onclick="nextChat()">Tetap sehat, sukses, dan semua impianmu tercapai.</div>
     <div class="chatBubble hidden" id="chat4" onclick="nextChat()">Kita semua sayang kamu, semoga selalu diberkahi ya!</div>
-    <img src="kue.png" id="kue" onclick="showGiftbox()">
+    <img src="kue.png" id="kue" class="hidden" onclick="showGiftbox()">
 </div>
 
 <div id="giftScreen" class="screen hidden">
@@ -133,6 +133,7 @@
 
 <script>
 let balloons = 3;
+let chatIndex = 0; // Indeks untuk mengelola chat bubble
 
 function explode(balloon) {
     balloon.classList.add('explode');
@@ -145,8 +146,6 @@ function openLetter() {
     document.getElementById('letterScreen').classList.add('hidden');
     document.getElementById('ucapanScreen').classList.remove('hidden');
 }
-
-let chatIndex = 0;
 
 function startChat() {
     // Menunggu foto dimuat, baru memulai chat
@@ -171,6 +170,11 @@ function nextChat() {
         nextBubble.style.width = nextBubble.scrollWidth + 'px';
 
         chatIndex++; 
+    }
+
+    // Jika chat terakhir selesai, munculkan kue
+    if (chatIndex === 4) {
+        document.getElementById('kue').classList.remove('hidden');
     }
 }
 
