@@ -39,11 +39,36 @@
         .photo {
             width: 70vw; max-width: 400px; aspect-ratio: 3/4; object-fit: cover; border-radius: 15px;
         }
+        
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink {
+        50% {
+        border-color: transparent;
+            }
+        }
+
         .chatBubble {
-            background: white; padding: 15px; border-radius: 20px;
-            font-size: 30px; max-width: 90%;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            margin: 10px 0; cursor: pointer;
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            font-size: 30px;
+            max-width: 90%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin: 10px 0;
+            cursor: pointer;
+            overflow: hidden; /* Menyembunyikan teks yang belum muncul */
+            border-right: 3px solid black; /* Menambahkan kursor berkedip */
+            white-space: nowrap;
+            width: 0; /* Mulai dengan lebar 0 untuk mensimulasikan mengetik */
+            animation: typing 2s steps(30) 1s forwards, blink 0.75s step-end infinite;
         }
         #kue {
             width: 250px; position: absolute; bottom: -300px;
