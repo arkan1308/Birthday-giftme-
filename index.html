@@ -93,11 +93,11 @@
 
 <div id="ucapanScreen" class="screen hidden">
     <img src="foto.jpg" class="photo">
-    <div class="chatBubble" id="chat1" onclick="nextChat()">cieeee yang hari ini ulang tahunnnnnnn!</div>
+    <div class="chatBubble" id="chat1" onclick="nextChat()">ciee cieee yang hari ini ulang tahunnnnnnn!</div>
     <div class="chatBubble" id="chat2" onclick="nextChat()">hahahaahh tambah tua dong wkwkwkwkwkwk.</div>
-    <div class="chatBubble" id="chat3" onclick="nextChat()">selamat ulang nama orangnya sayangkuuu.</div>
-    <div class="chatBubble" id="chat4" onclick="nextChat()">ulang tahun gak lengkap tanpa kueeeeee!</div>
-    <div class="chatBubble" id="chat5" onclick="nextChat()">cesss janagn lupa tiup lilinnya yaaaaa!</div>
+    <div class="chatBubble" id="chat3" onclick="nextChat()">selamat ulang nama orangnya sayangku tercinta.</div>
+    <div class="chatBubble" id="chat4" onclick="nextChat()">ulang tahun gak lengkap tanpa kueeeeee ga sihh!</div>
+    <div class="chatBubble" id="chat5" onclick="nextChat()">ohh iya cesss janagn lupa tiup lilinnya yaaaaa!</div>
     <img src="kue.png" id="kue" class="hidden" onclick="showGiftbox()">
 </div>
 
@@ -112,9 +112,9 @@
 <div id="bonekaScreen" class="screen hidden">
     <p style="font-size:48px;">Pilih boneka favoritmu:</p>
     <div style="display:flex;gap:20px;">
-        <img src="bear.png" style="width:240px;cursor:pointer;" onclick="showDoa('Beruang')">
-        <img src="rabbit.png" style="width:240px;cursor:pointer;" onclick="showDoa('Kelinci')">
-        <img src="cat.png" style="width:240px;cursor:pointer;" onclick="showDoa('Kucing')">
+        <img src="bear.png" style="width:300px;cursor:pointer;" onclick="showDoa('Beruang')">
+        <img src="rabbit.png" style="width:300px;cursor:pointer;" onclick="showDoa('Kelinci')">
+        <img src="cat.png" style="width:300px;cursor:pointer;" onclick="showDoa('Kucing')">
     </div>
 </div>
 
@@ -178,13 +178,20 @@ function chooseBox(lucky) {
 function showDoa(type) {
     document.getElementById('bonekaScreen').classList.add('hidden');
     document.getElementById('doaScreen').classList.remove('hidden');
-    const text = type === "Panjang" ? "Semoga harimu penuh keberkahan dan kebahagiaan selalu."
-                                    : `Semoga bahagia seperti ${type.toLowerCase()} yang lucu!`;
+    let text;
+    if (type === "Panjang") {
+        text = "Yahhhh maaf kamu kurang beruntung tapi tidak apa apa semoga kamu bisa beruntung lain kali dan seterusnya ku doakan juka hidupmu penuh keberkahan dan kelimpahan rizky."; // Edit doa panjang di sini
+    } else if (type === "Beruang") {
+        text = "hahahah pilihan bagus. kamu suka beruang!semoga kamu juga bisa sekuat beruang";
+    } else if (type === "Kelinci") {
+        text = "wow kwlinci lucu sekaliiii semoga kamu bisa mengtasi masalah selincah kelinci!";
+    } else if (type === "Kucing") {
+        text = "rowr rowr wkwkwkwk kamu emng se imut kucing semoga kamu bertambah imuttt!";
+    }
     document.getElementById('doaBubble').innerText = text;
 }
-
 function sendToWA() {
-    window.location.href = "https://wa.me/62xxxxxx?text=Terima kasih atas ucapan ulang tahunnya!";
+    window.location.href = "https://wa.me/6283838763673?text=Terima kasih atas ucapan ulang tahunnya!";
 }
 </script>
 
