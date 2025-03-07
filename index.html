@@ -18,7 +18,12 @@
         .balloon {
             width: 100px; height: 140px; border-radius: 50%;
             position: absolute; cursor: pointer;
-            animation: float 5s infinite ease-in-out;
+            animation: float 5s infinite ease-in-out; 
+        }
+            tali {
+                width: 2px;
+                height: 80px;
+                background-color: #555;
         }
         @keyframes float {
             0%, 100% { transform: translateY(0); }
@@ -105,9 +110,12 @@
 <audio id="backsound" src="backsound.mp3" autoplay loop></audio>
 <audio id="popSound" src="pop.mp3"></audio>
 <div id="intro" class="screen">
-    <div class="balloon" style="background:red; top:60%; left:10%;" onclick="explode(this)"></div>
-    <div class="balloon" style="background:blue; top:70%; left:40%;" onclick="explode(this)"></div>
-    <div class="balloon" style="background:green; top:65%; left:70%;" onclick="explode(this)"></div>
+    <div class="balloon" style="background:red; top:60%; left:10%;" onclick="explode(this)">
+        <div class="tali"></div>
+    <div class="balloon" style="background:blue; top:70%; left:40%;" onclick="explode(this)">
+        <div class="tali"></div>
+    <div class="balloon" style="background:green; top:65%; left:70%;" onclick="explode(this)">
+        <div class="tali"></div>
 </div>
 
 <div id="letterScreen" class="screen hidden">
