@@ -16,15 +16,24 @@
         }
         .hidden { display: none; }
         .balloon {
-            width: 100px; height: 140px; border-radius: 50%;
-            position: absolute; cursor: pointer;
-            animation: float 5s infinite ease-in-out; 
+            width: 100px;
+            height: 140px;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+            animation: float 5s infinite ease-in-out, floatUp 3s ease-out forwards;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
         }
+
         .tali {
             width: 2px;
             height: 80px;
             background-color: #555;
+            pointer-events: none; /* biar tali gak ikut diklik */
         }
+        
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-60px); }
@@ -111,13 +120,13 @@
 <audio id="popSound" src="pop.mp3"></audio>
 <div id="intro" class="screen">
     <div class="balloon" style="background:red; top:60%; left:10%;" onclick="explode(this)">
-        <div class="tali"></div>
+         <div class="tali"></div>
     </div>
     <div class="balloon" style="background:blue; top:70%; left:40%;" onclick="explode(this)">
-        <div class="tali"></div>
+         <div class="tali"></div>
     </div>
     <div class="balloon" style="background:green; top:65%; left:70%;" onclick="explode(this)">
-        <div class="tali"></div> 
+         <div class="tali"></div>
     </div>
 </div>
 
@@ -157,18 +166,21 @@
 </div>
 
 <script>
-let balloons = 3;
-let chatIndex = 0;
+let balloons = 3; // tetap sama
 
 function explode(balloon) {
-    if (balloons === 3) {  // pas balon pertama diklik, nyalakan backsound
-        document.getElementById('backsound').play();
-    }
+    if (balloons === 3) document.getElementById('backsound').play();
+
     document.getElementById('popSound').play();
     balloon.classList.add('explode');
+
     setTimeout(() => balloon.remove(), 500);
     balloons--;
-    if (balloons === 0) document.getElementById('letterScreen').classList.remove('hidden');
+
+    if (balloons === 0) {
+        document.getElementById('letterScreen').classList.remove('hidden');
+    }
+}
 }
 
 function openLetter() {
